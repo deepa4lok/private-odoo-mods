@@ -47,12 +47,12 @@ class claim(models.Model):
         self.grand_total = self.amount_tax + self.amount_cost + self.amount_nett + self.amount_payment
 
 
-    @api.one
-    @api.depends('claim_line.amount_nett', 'claim_line.amount_tax','claim_line.amount_total', 'tax_return_line.amount_tax_return_total',
-                 'cost_line.amount_cost', 'payment_line.amount_payment'
-                 )
-    def _compute_date(self):
-        self.due_date = (line.due_date for line in self.claim_line)
+    #@api.one
+    #@api.depends('claim_line.amount_nett', 'claim_line.amount_tax','claim_line.amount_total', 'tax_return_line.amount_tax_return_total',
+    #             'cost_line.amount_cost', 'payment_line.amount_payment'
+    #             )
+    #def _compute_date(self):
+    #    self.due_date = (line.due_date for line in self.claim_line)
 
 
     name = fields.Char(
@@ -185,11 +185,11 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_amount'
     )
-    due_date = fields.Date(
-        string=_("Due Date"),
-        required=True,
-        translate=False,
-        readonly=False,
-        store=True,
-        compute='_compute_date'
-    )
+    #due_date = fields.Date(
+    #    string=_("Due Date"),
+    #    required=True,
+    #    translate=False,
+    #    readonly=False,
+    #    store=True,
+    #    compute='_compute_date'
+    #)
