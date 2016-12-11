@@ -122,8 +122,9 @@
                     <separator/>
                     <group expand="0" string="Group By">
                     	<filter name="group_by_debtor" string="Debtor" context="{'group_by':'zpartner'}"/>
+                        <filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/>
                         <separator/>
-                        <filter string="Due Month" context="{'group_by':'date_due'}"/>
+                        <!--filter string="Due Month" context="{'group_by':'date_due'}"/-->
                     </group>
                </search>
             </field>
