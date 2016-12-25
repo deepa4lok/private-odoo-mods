@@ -19,6 +19,7 @@
                 </tree>
             </field>
         </record>
+
         <record id="claims_form" model="ir.ui.view">
             <field name="name">claim.form</field>
             <field name="model">claim</field>
