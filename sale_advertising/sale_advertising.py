@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution	
-#    Copyright (C) 2004-2008 Tiny SPRL (<http://tiny.be>). All Rights Reserved
+#    Copyright (C) 2004-2016 Magnus (<http://www.magnus.nl>). All Rights Reserved
 #    $Id$
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,7 @@
 #
 ##############################################################################
 
-from osv import fields,osv
-from osv import orm
+from openerp.osv import fields, osv, orm
 import time
 
 
@@ -34,17 +33,17 @@ class sale_order(osv.osv):
         'advertising_agency': fields.many2one('res.partner','Advertising Agency'),
     }
 
-    def onchange_published_customer(self, cursor, user, ids ,published_customer):
+    def onchange_published_customer(self, cr, uid, ids, published_customer, context):
         data = {'advertising_agency':published_customer,'partner_id':published_customer,'partner_invoice_id': False, 'partner_shipping_id':False, 'partner_order_id':False}
         if published_customer:
-            address = self.onchange_partner_id(cursor, user, ids, published_customer)
+            address = self.onchange_partner_id(cr, uid, ids, published_customer, context)
             data.update(address['value'])
         return {'value' : data}
 
-    def onchange_advertising_agency(self, cursor, user, ids, ad_agency):
+    def onchange_advertising_agency(self, cr, uid, ids, ad_agency, context):
         data = {'partner_id':ad_agency,'partner_invoice_id': False, 'partner_shipping_id':False, 'partner_order_id':False}
         if ad_agency:
-            address = self.onchange_partner_id(cursor, user, ids, ad_agency)
+            address = self.onchange_partner_id(cr, uid, ids, ad_agency, context)
             data.update(address['value'])
         return {'value' : data}
 

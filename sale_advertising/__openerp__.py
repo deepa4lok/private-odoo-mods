@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2008 Tiny SPRL (<http://tiny.be>). All Rights Reserved
+#    Copyright (C) 2004-2016 Magnus (<http://www.magnus.nl>). All Rights Reserved
 #    $Id$
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,19 +20,25 @@
 #
 ##############################################################################
 {
-    "name" : "Sales: Avertising Sales",
-    "version" : "0.1",
-    "author" : "Tiny",
-    "category" : "Generic Modules/Sales & Purchases",
-    "website" : "http://www.openerp.com",
-    "description": """This module allow you to use the Sale Management to encode your advertising sales ... TODO
-""",
-    "depends" : ["sale"],
-    "init_xml" : [],
-    "demo_xml" : ["sale_advertising_demo.xml"],
-    "update_xml" : ["security/ir.model.access.csv","sale_advertising_view.xml",],
-    "active": False,
-    "installable": True
+    'name': 'sale_advertising',
+    'version': '1.0',
+    'category': 'Sale',
+    'description': """
+This module allow you to use the Sale Management to encode your advertising sales
+=====================================================================================
+
+
+    """,
+    'author': 'Magnus - Willem Hulshof',
+    'website': 'http://www.magnus.nl',
+    'depends': ['sale',
+                ],
+    'data': ["security/ir.model.access.csv",
+             "sale_advertising_view.xml",
+             ],
+    'demo': ['sale_advertising_demo.xml'],
+    'installable': True
 }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
