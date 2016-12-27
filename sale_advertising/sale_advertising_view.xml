@@ -1,11 +1,7 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
 
-<record model="res.request.link">
-    <field name="name">Sale order</field>
-    <field name="object">sale.order</field>
-</record>
 
 <!-- View for sale.order object inherited from sale module -->
 	<record model="ir.ui.view" id="view_order_form_inherit">
@@ -14,12 +10,11 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
-				<notebook position="inside">
-					<page string="Advertising">
-						<field name="published_customer" select="2" on_change="onchange_published_customer(published_customer)"/>
-						<field name="advertising_agency" select="2" on_change="onchange_advertising_agency(advertising_agency)"/>
-					</page>
-				</notebook>
+				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="after">
+					<separator string="Advertising" colspan="2"/>
+						<field name="published_customer"  on_change="onchange_published_customer(published_customer)"/>
+						<field name="advertising_agency"  on_change="onchange_advertising_agency(advertising_agency)"/>
+				</xpath>
 			</field>
 		</record>
 
@@ -30,15 +25,17 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
-				<xpath expr="/form/notebook/page/field[@name='order_line']/form/notebook" position="inside">
-					<page string="Advertising">
-						<field name="adv_issue"/>
-						<field name="page_reference"/>
-						<field name="from_date"/>
-						<field name="to_date"/>
-						<separator string="Layout Remark" colspan="4"/>
-						<field name="layout_remark" colspan="4" nolabel="1"/>
-					</page>
+				<xpath expr="/form/sheet/notebook/page/field/form/label[@for='name']" position="before">
+					<!--page string="Advertising"-->
+						<group>
+							<field name="adv_issue"/>
+							<field name="page_reference"/>
+							<field name="from_date"/>
+							<field name="to_date"/>
+							<separator string="Layout Remark" colspan="4"/>
+							<field name="layout_remark" colspan="4" nolabel="1"/>
+						</group>
+					<!--/page-->
 				</xpath>
 			</field>
 	</record>
@@ -49,16 +46,20 @@
 			<field name="model">sale.order.line</field>
 			<field name="inherit_id" ref="sale.view_order_line_form2"/>
 			<field name="arch" type="xml">
-			<notebook position="inside">
-				<page string="Advertising">
-					<field name="adv_issue" select="1"/>
-					<field name="page_reference"/>
-					<field name="from_date"/>
-					<field name="to_date"/>
-					<separator string="Layout Remark" colspan="4"/>
-					<field name="layout_remark" colspan="4" nolabel="1"/>
-				</page>
-			</notebook>
+				<xpath expr="/form/sheet/label[@for='name']" position="before">
+					<notebook>
+						<page string="Advertising">
+							<group>
+								<field name="adv_issue" />
+								<field name="page_reference"/>
+								<field name="from_date"/>
+								<field name="to_date"/>
+								<separator string="Layout Remark" colspan="4"/>
+								<field name="layout_remark" colspan="4" nolabel="1"/>
+							</group>
+						</page>
+					</notebook>
+				</xpath>
 			</field>
 		</record>
 
@@ -70,11 +71,16 @@
 			<field name="model">sale.advertising.issue</field>
 			<field name="arch" type="xml">
 				<form string="Advertising issue">
-					<field name="name" select="1"/>
-					<field name="issue_date" select="2" />
-					<field name="medium" select="2"/>
-					<field name="default_note" colspan="4"/>
-					<field name="state" colspan="4" select="1"/>
+					<sheet>
+					<group>
+						<field name="name" string="Name"/>
+						<field name="analytic_account_id" string="Related Analytic Account"/>
+						<field name="issue_date" string="Issue Date" />
+						<field name="medium" string="Medium"/>
+						<field name="default_note" string="Default Note" colspan="4"/>
+						<field name="state" string="State" />
+					</group>
+					</sheet>
 				</form>
 			</field>
 		</record>
@@ -84,10 +90,12 @@
 			<field name="model">sale.advertising.issue</field>
 			<field name="arch" type="xml">
 				<tree string="Advertising issue">
-					<field name="name" />
-					<field name="issue_date" />
-					<field name="medium" />
-					<field name="state"  />
+						<field name="name" string="Name"/>
+						<field name="analytic_account_id" string="Related Analytic Account"/>
+						<field name="issue_date" string="Issue Date"/>
+						<field name="medium" string="Medium"/>
+						<field name="default_note" string="Default Note" colspan="4"/>
+						<field name="state" string="State" />
 				</tree>
 			</field>
 		</record>
@@ -100,7 +108,7 @@
 			<field name="view_id" ref="sale_advertising_issue_tree"/>
 		</record>
 		
-		<menuitem name="Advertising" id="menu_sale_advertising" parent="sale.menu_sale_root"/>
+		<menuitem name="Advertising" id="menu_sale_advertising" parent="base.menu_sales"/>
 		<menuitem name="Advertising Issue" id="menu_sale_advertising_issue" parent="menu_sale_advertising" action="action_sale_advertising_issue"/>
 		
 <!-- View for sale.advertising.proof object -->
@@ -110,10 +118,14 @@
 			<field name="model">sale.advertising.proof</field>
 			<field name="arch" type="xml">
 				<form string="Advertising proof">
-					<field name="name" select="1"/>
-					<field name="address_id" select="2" />
-					<field name="number" select="2"/>
-					<field name="target_id" select="1"/>
+					<sheet>
+					<group>
+						<field name="name" />
+						<field name="address_id" />
+						<field name="number" />
+						<field name="target_id" />
+					</group>
+					</sheet>
 				</form>
 			</field>
 		</record>
@@ -123,9 +135,9 @@
 			<field name="model">sale.advertising.proof</field>
 			<field name="arch" type="xml">
 				<tree string="Advertising proof">
-					<field name="name"/>
-					<field name="number"/>
-					<field name="target_id"/>
+						<field name="name"/>
+						<field name="number"/>
+						<field name="target_id"/>
 				</tree>
 			</field>
 		</record>
@@ -140,7 +152,7 @@
 		<menuitem name="Advertising Proof" id="menu_sale_advertising_proof" parent="menu_sale_advertising" action="action_sale_advertising_proof"/>
 		
 <!-- View for product.product object inherit -->
-	<record model="ir.ui.view" id="product_normal_form_view_inherit">
+	<!--record model="ir.ui.view" id="product_normal_form_view_inherit">
 			<field name="name">product.product.form.inherit</field>
 			<field name="type">form</field>
 			<field name="model">product.product</field>
@@ -151,7 +163,7 @@
 					<newline/>
 				</field>
 			</field>
-	</record>
+	</record-->
 
 <!-- New Menuitem -->
 	<record model="ir.actions.act_window" id="advertising_sale_order_action">

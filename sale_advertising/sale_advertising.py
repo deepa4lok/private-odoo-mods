@@ -29,12 +29,12 @@ class sale_order(osv.osv):
     _inherit = "sale.order"
 
     _columns = {
-        'published_customer': fields.many2one('res.partner','Published Customer'),
-        'advertising_agency': fields.many2one('res.partner','Advertising Agency'),
+        'published_customer': fields.many2one('res.partner', 'Published Customer'),
+        'advertising_agency': fields.many2one('res.partner', 'Advertising Agency'),
     }
 
     def onchange_published_customer(self, cr, uid, ids, published_customer, context):
-        data = {'advertising_agency':published_customer,'partner_id':published_customer,'partner_invoice_id': False, 'partner_shipping_id':False, 'partner_order_id':False}
+        data = {'advertising_agency':published_customer,'partner_id':published_customer, 'partner_invoice_id': False, 'partner_shipping_id':False, 'partner_order_id':False}
         if published_customer:
             address = self.onchange_partner_id(cr, uid, ids, published_customer, context)
             data.update(address['value'])
@@ -51,18 +51,40 @@ sale_order()
 
 class sale_advertising_issue(osv.osv):
     _name = "sale.advertising.issue"
+    _inherits = {
+        'account.analytic.account': 'analytic_account_id',
+    }
     _description="Sale Advertising Issue"
+
+
     _columns = {
         'name': fields.char('Name', size=32, required=True),
+        'analytic_account_id': fields.many2one('account.analytic.account', required=True,
+                                      string='Related Analytic Account', ondelete='restrict',
+                                      help='Analytic-related data of the issue'),
         'issue_date': fields.date('Issue Date', required=True),
         'medium': fields.many2one('product.category','Medium', required=True),
         'state': fields.selection([('open','Open'),('close','Close')], 'State'),
         'default_note': fields.text('Default Note'),
     }
+
+    # voor nsm_modules 7.0, date_publish bestaat alleen in nsm.
+    # def _get_issue_date(self, cr, uid, analytic_account_id, context=None):
+    #    analytic = self.pool.get('account.analytic.account').browse(cr, uid, analytic_account_id, context=None)
+    #    return analytic[0].date_publish
+
     _defaults = {
+    #    'issue_date': _get_issue_date,
         'issue_date': lambda *a: time.strftime('%Y-%m-%d'),
-        'state': lambda *a: 'open',
+        'state': 'open',
     }
+
+    #def on_change_analytic(self, cr, uid, analytic_account_id, context=None):
+    #    value = {}
+    #    value['issue_date'] = _get_issue_date(cr, uid, analytic_account_id, context=None)
+
+    #    return {'value': value}
+
 
 sale_advertising_issue()
 
@@ -77,24 +99,24 @@ class sale_order_line(osv.osv):
     }
 sale_order_line()
 
-class product_product(osv.osv):
-    _inherit = "product.product"
-    _columns = {
-        'equivalency_in_A4': fields.float('A4 Equivalency',digits=(16,2)),
-    }
-product_product()
+#class product_product(osv.osv):
+#    _inherit = "product.product"
+#    _columns = {
+#        'equivalency_in_A4': fields.float('A4 Equivalency',digits=(16,2)),
+#    }
+#product_product()
 
 class sale_advertising_proof(osv.osv):
     _name = "sale.advertising.proof"
     _description="Sale Advertising Proof"
     _columns = {
         'name': fields.char('Name', size=32, required=True),
-        'address_id':fields.many2one('res.partner.address','Delivery Address', required=True),
+        'address_id':fields.many2one('res.partner','Delivery Address', required=True),
         'number': fields.integer('Number of Copies', required=True),
         'target_id': fields.many2one('sale.order','Target', required=True),
     }
     _defaults = {
-        'number': lambda *a: 1,
+        'number': 1,
     }
 sale_advertising_proof()
 
