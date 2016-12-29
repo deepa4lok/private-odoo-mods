@@ -93,10 +93,37 @@ class sale_order_line(osv.osv):
     _columns = {
         'layout_remark': fields.text('Layout Remark'),
         'adv_issue': fields.many2one('sale.advertising.issue','Advertising Issue'),
+        'ad_class': fields.many2one('product.category', 'Advertising Class'),
         'page_reference': fields.char('Reference of the Page', size=32),
         'from_date': fields.datetime('Start of Validity'),
         'to_date': fields.datetime('End of Validity'),
     }
+
+    def onchange_adv_issue(self, cr, uid, ids, adv_issue=False, context=None):
+        if context is None:
+            context = {}
+        if adv_issue:
+            #import pdb; pdb.set_trace()
+            ad_issue = self.pool.get('sale.advertising.issue').browse(cr, uid, adv_issue, context)
+            ac = ad_issue.medium and ad_issue.medium.id or False
+            data = {'ad_class':
+                        [('id', 'child_of', ac)]}
+            return {'domain' : data}
+        return
+
+    def onchange_ad_class(self, cr, uid, ids, ad_class=False, context=None):
+        if context is None:
+            context = {}
+        if ad_class:
+            data = {}
+            #import pdb; pdb.set_trace()
+            template_ids = self.pool.get('product.template').search(cr, uid, [('categ_id', '=', ad_class)], context=context )
+            product_ids = self.pool.get('product.product').search(cr, uid, [('product_tmpl_id', 'in', template_ids)], context=context )
+            if product_ids :
+                data['product_id'] = [('id', 'in', product_ids)]
+                return {'domain' : data}
+        return
+
 sale_order_line()
 
 #class product_product(osv.osv):

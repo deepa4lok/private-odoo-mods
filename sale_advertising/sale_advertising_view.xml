@@ -10,9 +10,13 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
-				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="after">
-					<separator string="Advertising" colspan="2"/>
+				<xpath expr="/form/sheet/group/group/field[@name='partner_id']" position="before">
 						<field name="published_customer"  on_change="onchange_published_customer(published_customer)"/>
+				</xpath>
+				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="attributes">
+					<attribute name="invisible">[('published_customer','&lt;&gt;', "")]</attribute>
+				</xpath>
+				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="after">
 						<field name="advertising_agency"  on_change="onchange_advertising_agency(advertising_agency)"/>
 				</xpath>
 			</field>
@@ -25,17 +29,18 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
+				<xpath expr="/form/sheet/notebook/page/field/form/group/group/field[@name='product_id']" position="before">
+					<field name="adv_issue" on_change="onchange_adv_issue(adv_issue)"/>
+					<field name="ad_class" on_change="onchange_ad_class(ad_class)"/>
+				</xpath>
 				<xpath expr="/form/sheet/notebook/page/field/form/label[@for='name']" position="before">
-					<!--page string="Advertising"-->
 						<group>
-							<field name="adv_issue"/>
 							<field name="page_reference"/>
 							<field name="from_date"/>
 							<field name="to_date"/>
-							<separator string="Layout Remark" colspan="4"/>
-							<field name="layout_remark" colspan="4" nolabel="1"/>
+							<separator string="Layout Remark" colspan="2"/>
+							<field name="layout_remark" colspan="2" nolabel="1"/>
 						</group>
-					<!--/page-->
 				</xpath>
 			</field>
 	</record>
