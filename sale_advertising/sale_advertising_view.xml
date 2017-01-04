@@ -24,6 +24,9 @@
 					<field name="medium" invisible="1" />
 					<field name="ad_class" on_change="onchange_ad_class(ad_class)" domain="[('type','!=', 'view'), ('id','child_of', medium)]"/>
 				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/form/group/group/div/field[@name='product_uom']" position="attributes">
+					<attribute name="invisible">True</attribute>
+				</xpath>
 				<xpath expr="/form/sheet/notebook/page/field/form/label[@for='name']" position="before">
 						<group>
 							<field name="page_reference"/>
