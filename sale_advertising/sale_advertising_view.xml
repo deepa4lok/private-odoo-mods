@@ -19,11 +19,39 @@
 				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="after">
 						<field name="advertising_agency"  on_change="onchange_advertising_agency(advertising_agency)"/>
 				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/form/group/group/field[@name='product_id']" position="before">
+					<field name="adv_issue" on_change="onchange_adv_issue(adv_issue)" />
+					<field name="medium" invisible="1" />
+					<field name="ad_class" on_change="onchange_ad_class(ad_class)" domain="[('type','!=', 'view'), ('id','child_of', medium)]"/>
+				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/form/label[@for='name']" position="before">
+						<group>
+							<field name="page_reference"/>
+							<field name="from_date"/>
+							<field name="to_date"/>
+							<separator string="Layout Remark" colspan="2"/>
+							<field name="layout_remark" colspan="2" nolabel="1"/>
+						</group>
+				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_id']" position="before">
+					<field name="adv_issue"/>
+					<field name="ad_class"/>
+				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_uom_qty']" position="replace">
+				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_uom']" position="replace">
+				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_uos']" position="replace">
+				</xpath>
+				<xpath expr="/form/sheet/notebook/page/field/tree/field[@name='name']" position="after">
+					<field name="page_reference"/>
+				</xpath>
+
 			</field>
 		</record>
 
 <!-- View for sale.order.line object inherited from sale module -->
-	<record model="ir.ui.view" id="view_order_form_inherit1">
+	<!--record model="ir.ui.view" id="view_order_form_inherit1">
 			<field name="name">sale.order.form.inherit.line</field>
 			<field name="type">form</field>
 			<field name="model">sale.order</field>
@@ -43,7 +71,7 @@
 						</group>
 				</xpath>
 			</field>
-	</record>
+	</record-->
 
 		<record model="ir.ui.view" id="view_order_form_inherit2">
 			<field name="name">sale.order.line.form.inherit.line2</field>
