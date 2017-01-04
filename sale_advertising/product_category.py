@@ -55,22 +55,11 @@ class product_category(osv.osv):
         res = self.name_get_full(cr, uid, ids, context=context)
         return dict(res)
 
-    def _supplier_category_search(self, cr, uid, obj, name, args,  context=None):
-        if not args or not isinstance(args[0][2], (int, long)) or not args[0][2]:
-            return [('id', '=', False)]  # maybe raise NotImplemented?
-        user = self.pool['res.users'].browse(cr, uid, args[0][2], context=context)
-        supplier = user.partner_id  # partner_id is required on users
-        if not supplier.product_category_ids:
-            return [('id', '=', False)]
-        cat_ids = [cat.id for cat in supplier.product_category_ids]
-        portal_category_ids = self.search(cr, uid, [('supportal', '=', True)], context=context)
-        portal_category_ids.extend(cat_ids)
-        return [('id', 'in', portal_category_ids)]
 
 
     _columns = {
         'complete_name': fields.function(_name_get_fnc, type="char", string='Name'),
-        }
+    }
 
 
 
