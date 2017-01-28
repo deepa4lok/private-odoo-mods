@@ -88,9 +88,12 @@ class sale_advertising_issue(orm.Model):
 
 class sale_order_line(orm.Model):
     _inherit = "sale.order.line"
+
+
     _columns = {
         'layout_remark': fields.text('Layout Remark'),
         'adv_issue': fields.many2one('sale.advertising.issue','Advertising Issue'),
+        'medium': fields.related('adv_issue', 'medium', type='integer', string='Medium', ),
         'ad_class': fields.many2one('product.category', 'Advertising Class'),
         'page_reference': fields.char('Reference of the Page', size=32),
         'from_date': fields.datetime('Start of Validity'),
@@ -142,6 +145,8 @@ class sale_advertising_proof(orm.Model):
     _defaults = {
         'number': 1,
     }
+
+
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
