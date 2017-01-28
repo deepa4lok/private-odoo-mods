@@ -25,7 +25,7 @@ import time
 
 
 
-class sale_order(osv.osv):
+class sale_order(orm.Model):
     _inherit = "sale.order"
 
     _columns = {
@@ -47,9 +47,8 @@ class sale_order(osv.osv):
             data.update(address['value'])
         return {'value' : data}
 
-sale_order()
 
-class sale_advertising_issue(osv.osv):
+class sale_advertising_issue(orm.Model):
     _name = "sale.advertising.issue"
     _inherits = {
         'account.analytic.account': 'analytic_account_id',
@@ -86,9 +85,8 @@ class sale_advertising_issue(osv.osv):
     #    return {'value': value}
 
 
-sale_advertising_issue()
 
-class sale_order_line(osv.osv):
+class sale_order_line(orm.Model):
     _inherit = "sale.order.line"
     _columns = {
         'layout_remark': fields.text('Layout Remark'),
@@ -124,16 +122,15 @@ class sale_order_line(osv.osv):
                 return {'domain' : data}
         return
 
-sale_order_line()
 
-#class product_product(osv.osv):
+#class product_product(orm.Model):
 #    _inherit = "product.product"
 #    _columns = {
 #        'equivalency_in_A4': fields.float('A4 Equivalency',digits=(16,2)),
 #    }
-#product_product()
 
-class sale_advertising_proof(osv.osv):
+
+class sale_advertising_proof(orm.Model):
     _name = "sale.advertising.proof"
     _description="Sale Advertising Proof"
     _columns = {
@@ -145,7 +142,6 @@ class sale_advertising_proof(osv.osv):
     _defaults = {
         'number': 1,
     }
-sale_advertising_proof()
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

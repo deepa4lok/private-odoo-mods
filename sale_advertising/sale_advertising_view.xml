@@ -11,13 +11,13 @@
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="/form/sheet/group/group/field[@name='partner_id']" position="before">
-						<field name="published_customer"  on_change="onchange_published_customer(published_customer)"/>
+						<field name="published_customer"  on_change="onchange_published_customer(published_customer, context)"/>
 				</xpath>
 				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="attributes">
-					<attribute name="invisible">[('published_customer','&lt;&gt;', "")]</attribute>
+					<attribute name="invisible">[('published_customer','!=', "")]</attribute>
 				</xpath>
 				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="after">
-						<field name="advertising_agency"  on_change="onchange_advertising_agency(advertising_agency)"/>
+						<field name="advertising_agency"  on_change="onchange_advertising_agency(advertising_agency, context)"/>
 				</xpath>
 			</field>
 		</record>
@@ -30,8 +30,8 @@
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="/form/sheet/notebook/page/field/form/group/group/field[@name='product_id']" position="before">
-					<field name="adv_issue" on_change="onchange_adv_issue(adv_issue)"/>
-					<field name="ad_class" on_change="onchange_ad_class(ad_class)"/>
+					<field name="adv_issue" on_change="onchange_adv_issue(adv_issue, context)"/>
+					<field name="ad_class" on_change="onchange_ad_class(ad_class, context)"/>
 				</xpath>
 				<xpath expr="/form/sheet/notebook/page/field/form/label[@for='name']" position="before">
 						<group>
@@ -76,7 +76,6 @@
 			<field name="model">sale.advertising.issue</field>
 			<field name="arch" type="xml">
 				<form string="Advertising issue">
-					<sheet>
 					<group>
 						<field name="name" string="Name"/>
 						<field name="analytic_account_id" string="Related Analytic Account"/>
@@ -85,7 +84,6 @@
 						<field name="default_note" string="Default Note" colspan="4"/>
 						<field name="state" string="State" />
 					</group>
-					</sheet>
 				</form>
 			</field>
 		</record>
@@ -123,14 +121,12 @@
 			<field name="model">sale.advertising.proof</field>
 			<field name="arch" type="xml">
 				<form string="Advertising proof">
-					<sheet>
 					<group>
 						<field name="name" />
 						<field name="address_id" />
 						<field name="number" />
 						<field name="target_id" />
 					</group>
-					</sheet>
 				</form>
 			</field>
 		</record>

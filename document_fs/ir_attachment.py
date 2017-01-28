@@ -3,11 +3,11 @@ import logging
 import os
 import re
 
-from openerp.osv import osv, fields
+from openerp.osv import osv, orm, fields
 
 _logger = logging.getLogger(__name__)
 
-class ir_attachment(osv.Model):
+class ir_attachment(orm.Model):
     _name = "ir.attachment"
     _inherit = 'ir.attachment'
 
