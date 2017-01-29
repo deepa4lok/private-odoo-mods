@@ -44,6 +44,7 @@ class claim(models.Model):
         self.amount_cost = sum(line.amount_cost for line in self.cost_line)
         self.amount_total = sum(line.amount_total for line in self.claim_line)
         self.amount_payment = sum(line.amount_payment for line in self.payment_line)
+        self.nett_tax_total = self.amount_tax + self.amount_nett + self.amount_payment
         self.grand_total = self.amount_tax + self.amount_cost + self.amount_nett + self.amount_payment
 
 
@@ -122,7 +123,7 @@ class claim(models.Model):
     )
     tax_return_sent = fields.Boolean(
         string=_("Teruggaaf"),
-        readonly=True,
+        #readonly=True,
         default=False,
         copy=False,
         help="It indicates that the tax return has been sent."
@@ -150,10 +151,17 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_amount'
     )
+    nett_tax_total = fields.Float(
+        string='Nett plus Tax Total',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
     grand_total = fields.Float(
         string='Claim Grand Total',
         digits=dp.get_precision('claim'),
-        store=True,
+        #store=True,
         readonly=True,
         compute='_compute_amount'
     )

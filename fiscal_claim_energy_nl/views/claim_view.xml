@@ -13,9 +13,11 @@
                     <field name="zpartner"/>
                     <field name="contrrek"/>
                     <field name="tax_return_sent"/>
-                    <field name="amount_tax"/>
-                    <field name="amount_cost"/>
-                    <field name="grand_total"/>
+                    <field name="amount_nett" sum="Nett"/>
+                    <field name="amount_tax" sum="Tax"/>
+                    <field name="nett_tax_total" sum="Nett plus Tax"/>
+                    <field name="amount_cost" sum="Cost"/>
+                    <field name="grand_total" sum="Total"/>
                 </tree>
             </field>
         </record>
@@ -38,6 +40,7 @@
                         <group>
                             <field name="amount_nett" />
                             <field name="amount_tax" />
+                            <field name="nett_tax_total" />
                             <field name="amount_cost" />
                             <field name="grand_total" />
                         </group>
