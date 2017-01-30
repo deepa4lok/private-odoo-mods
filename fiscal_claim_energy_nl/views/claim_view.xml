@@ -14,8 +14,12 @@
                     <field name="contrrek"/>
                     <field name="tax_return_sent"/>
                     <field name="amount_nett" sum="Nett"/>
+                    <field name="amount_vat" sum="Vat"/>
+                    <field name="amount_energy_tax_e" sum="E-tax"/>
+                    <field name="amount_energy_tax_g" sum="G-tax"/>
+                    <field name="amount_durable_tax_e" sum="Durable-E"/>
+                    <field name="amount_durable_tax_g" sum="Durable-G"/>
                     <field name="amount_tax" sum="Tax"/>
-                    <field name="nett_tax_total" sum="Nett plus Tax"/>
                     <field name="amount_cost" sum="Cost"/>
                     <field name="grand_total" sum="Total"/>
                 </tree>
@@ -29,22 +33,27 @@
             <field name="arch" type="xml">
                 <form string="Claims">
                 <sheet string="Claim">
-                    <group>
-                        <group>
+                    <group colspan="6" col="6">
+                        <group colspan="2" col="2">
                             <field name="contrrek"/>
                             <field string="Debtor" name="zpartner" />
                             <field name="partnersrt" />
                             <field name="batchcode"/>
-
                         </group>
-                        <group>
+                        <group colspan="2" col="2">
                             <field name="amount_nett" />
                             <field name="amount_tax" />
                             <field name="nett_tax_total" />
                             <field name="amount_cost" />
                             <field name="grand_total" />
                         </group>
-
+                        <group colspan="2" col="2">
+                            <field name="amount_vat" />
+                            <field name="amount_energy_tax_e" />
+                            <field name="amount_energy_tax_g" />
+                            <field name="amount_durable_tax_e" />
+                            <field name="amount_durable_tax_g" />
+                        </group>
                     </group>
                     <notebook>
                         <page string="Claim Details">
