@@ -57,7 +57,7 @@ class sale_advertising_issue(orm.Model):
 
 
     _columns = {
-        'name': fields.char('Name', size=32, required=True),
+        'name': fields.char('Name', size=64, required=True),
         'analytic_account_id': fields.many2one('account.analytic.account', required=True,
                                       string='Related Analytic Account', ondelete='restrict',
                                       help='Analytic-related data of the issue'),
