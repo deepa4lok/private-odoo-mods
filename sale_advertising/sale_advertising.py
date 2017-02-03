@@ -108,7 +108,7 @@ class sale_order_line(orm.Model):
             ad_issue = self.pool.get('sale.advertising.issue').browse(cr, uid, adv_issue, context)
             ac = ad_issue.medium and ad_issue.medium.id or False
             data = {'ad_class':
-                        [('id', 'child_of', ac)]}
+                        [('id', 'child_of', ac), ('type','!=','view')]}
             return {'domain' : data}
         return
 
