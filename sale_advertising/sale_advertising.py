@@ -78,11 +78,6 @@ class sale_advertising_issue(orm.Model):
         'state': 'open',
     }
 
-    #def on_change_analytic(self, cr, uid, analytic_account_id, context=None):
-    #    value = {}
-    #    value['issue_date'] = _get_issue_date(cr, uid, analytic_account_id, context=None)
-
-    #    return {'value': value}
 
 
 
@@ -104,7 +99,6 @@ class sale_order_line(orm.Model):
         if context is None:
             context = {}
         if adv_issue:
-            #import pdb; pdb.set_trace()
             ad_issue = self.pool.get('sale.advertising.issue').browse(cr, uid, adv_issue, context)
             ac = ad_issue.medium and ad_issue.medium.id or False
             data = {'ad_class':
@@ -117,7 +111,6 @@ class sale_order_line(orm.Model):
             context = {}
         if ad_class:
             data = {}
-            #import pdb; pdb.set_trace()
             template_ids = self.pool.get('product.template').search(cr, uid, [('categ_id', '=', ad_class)], context=context )
             product_ids = self.pool.get('product.product').search(cr, uid, [('product_tmpl_id', 'in', template_ids)], context=context )
             if product_ids :
@@ -125,12 +118,6 @@ class sale_order_line(orm.Model):
                 return {'domain' : data}
         return
 
-
-#class product_product(orm.Model):
-#    _inherit = "product.product"
-#    _columns = {
-#        'equivalency_in_A4': fields.float('A4 Equivalency',digits=(16,2)),
-#    }
 
 
 class sale_advertising_proof(orm.Model):

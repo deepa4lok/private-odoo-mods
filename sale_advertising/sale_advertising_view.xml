@@ -13,6 +13,9 @@
 				<xpath expr="/form/sheet/group/group/field[@name='partner_id']" position="before">
 						<field name="published_customer"  on_change="onchange_published_customer(published_customer, context)"/>
 				</xpath>
+				<xpath expr="/form/sheet/group/group/field[@name='partner_shipping_id']" position="attributes">
+					<attribute name="groups">base.group_no_one</attribute>
+				</xpath>
 				<xpath expr="/form/sheet/group/group/field[@name='project_id']" position="attributes">
 					<attribute name="invisible">[('published_customer','!=', "")]</attribute>
 				</xpath>
