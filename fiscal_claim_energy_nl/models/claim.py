@@ -180,7 +180,7 @@ class claim(models.Model):
         compute='_compute_amount'
     )
     amount_durable_tax_g = fields.Float(
-        string='Energy Tax G Total',
+        string='Durable Tax G Total',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
