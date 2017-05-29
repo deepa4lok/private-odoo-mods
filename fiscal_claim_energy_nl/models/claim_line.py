@@ -92,6 +92,9 @@ class claim_line(models.Model):
     )
     docsoort = fields.Selection([
             ('DF','Hoofdsom?'),
+            ('EF','Kweenie1'),
+            ('SF','Kweenie2'),
+            ('AB','Kweenie3'),
             ('KS','Incasso kosten?'),
             ('FA','Correctie?'),
         ],
@@ -282,7 +285,7 @@ class payment_line(models.Model):
     sequence = fields.Integer(
         string='Sequence',
         default=10,
-        help="Gives the sequence of this line when displaying the invoice."
+        help="Gives the sequence of this line when displaying the Payment Line."
     )
     claim_id = fields.Many2one('claim',
         string='Claim Reference',
@@ -293,7 +296,7 @@ class payment_line(models.Model):
         string='Payment',
         digits=dp.get_precision('claim'),
         store=True,
-        readonly=True,
+        readonly=False,
     )
     date_payment = fields.Date(
         string=_("Date Payment"),
@@ -318,7 +321,7 @@ class payment_line(models.Model):
     )
     docnr = fields.Char(
         string=_("Document Nr"),
-        required=True,
+        required=False,
         translate=False,
         readonly=False,
         size=32,
