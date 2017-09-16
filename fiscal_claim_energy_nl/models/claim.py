@@ -46,21 +46,54 @@ class claim(models.Model):
         self.amount_energy_tax_g = sum(line.energy_tax_g for line in self.claim_line)
         self.amount_durable_tax_g = sum(line.durable_tax_g for line in self.claim_line)
         self.amount_tax_orig = sum(line.amount_tax for line in self.claim_line)
+        self.amount_cost = sum(line.amount_cost for line in self.cost_line)
+        self.amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
+        amount_tax_return_ee = sum(line.energy_tax_e_return for line in self.tax_return_line)
+        amount_tax_return_de = sum(line.durable_tax_e_return for line in self.tax_return_line)
+        amount_tax_return_eg = sum(line.energy_tax_g_return for line in self.tax_return_line)
+        amount_tax_return_dg = sum(line.durable_tax_g_return for line in self.tax_return_line)
+        amount_tax_return_vat = sum(line.vat_return for line in self.tax_return_line)
+        amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
+#        self.amount_total = sum(line.amount_total for line in self.claim_line)
+        self.amount_payment = sum(line.amount_payment for line in self.payment_line)
+        self.nett_tax_total = self.amount_tax_orig + self.amount_nett
+        self.grand_total = self.amount_tax_orig + self.amount_cost + self.amount_nett
+
+        cost_surplus = self.amount_cost - self.amount_payment
+        cost_cum = 0
+        if cost_surplus <= 0:
+            cost_cum = cost_surplus
+            self.amount_cost_cum = 0
+        else:
+            self.amount_cost_cum = cost_surplus
+
+        if self.nett_tax_total > 0:
+            cost_part = cost_cum / self.nett_tax_total
+            self.amount_nett_cum = self.amount_nett * (1 + cost_part)
+        else:
+            self.amount_nett_cum = self.amount_nett + cost_cum
+            cost_part = 0
+
+        self.amount_vat_cum = self.amount_vat * (1 + cost_part) - amount_tax_return_vat
+        self.amount_energy_tax_e_cum = self.amount_energy_tax_e * (1 + cost_part) - amount_tax_return_ee
+        self.amount_durable_tax_e_cum = self.amount_durable_tax_e * (1 + cost_part) - amount_tax_return_de
+        self.amount_energy_tax_g_cum = self.amount_energy_tax_g * (1 + cost_part) - amount_tax_return_eg
+        self.amount_durable_tax_g_cum = self.amount_durable_tax_g * (1 + cost_part) - amount_tax_return_dg
+        self.amount_tax_return_cum = self.amount_vat_cum + self.amount_energy_tax_e_cum + self.amount_durable_tax_e_cum + self.amount_energy_tax_g_cum + self.amount_durable_tax_g_cum
+        self.amount_tax_cum = self.amount_tax_orig * (1 + cost_part)
+#        self.amount_cost_cum = 0
+#        self.amount_total_cum =
+        self.amount_payment_cum = self.amount_payment
+        self.nett_tax_total_cum = self.nett_tax_total + cost_cum
+        self.grand_total_cum = self.grand_total - self.amount_payment
+        # even kijken wat dit moet wworden
         self.amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
         self.amount_tax = self.amount_tax_orig + self.amount_tax_return
-        self.amount_cost = sum(line.amount_cost for line in self.cost_line)
-        self.amount_total = sum(line.amount_total for line in self.claim_line)
-        self.amount_payment = sum(line.amount_payment for line in self.payment_line)
-        self.nett_tax_total = self.amount_tax + self.amount_nett + self.amount_payment
-        self.grand_total = self.amount_tax + self.amount_cost + self.amount_nett + self.amount_payment
 
 
-    #@api.one
-    #@api.depends('claim_line.amount_nett', 'claim_line.amount_tax','claim_line.amount_total', 'tax_return_line.amount_tax_return_total',
-    #             'cost_line.amount_cost', 'payment_line.amount_payment'
-    #             )
-    #def _compute_date(self):
-    #    self.due_date = (line.due_date for line in self.claim_line)
+
+
+
 
 
     name = fields.Char(
@@ -135,6 +168,34 @@ class claim(models.Model):
         copy=False,
         help="It indicates that the tax return has been sent."
         )
+    bankruptcy = fields.Boolean(
+        string=_("Faillissement"),
+        # readonly=True,
+        default=False,
+        copy=False,
+        help="It indicates that the debtor is in bankruptcy."
+    )
+    wsnp = fields.Boolean(
+        string=_("WSNP"),
+        # readonly=True,
+        default=False,
+        copy=False,
+        help="It indicates that the debtor is in WSNP."
+    )
+    sued = fields.Boolean(
+        string=_("Dagvaarding"),
+        # readonly=True,
+        default=False,
+        copy=False,
+        help="It indicates that the debtor has been sued."
+    )
+    discharge = fields.Boolean(
+        string=_("Finale Kwijting"),
+        # readonly=True,
+        default=False,
+        copy=False,
+        help="It indicates that agreement with the debtor has been reached with discharge."
+    )
     comment = fields.Text('Additional Information'
         )
     amount_nett = fields.Float(
@@ -232,6 +293,104 @@ class claim(models.Model):
         string='Payment',
         digits=dp.get_precision('claim'),
         store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_nett_cum = fields.Float(
+        string='Nett Claim Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_orig_cum = fields.Float(
+        string='Tax Claim Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_vat_cum = fields.Float(
+        string='VAT Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_energy_tax_e_cum = fields.Float(
+        string='Energy Tax E Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_energy_tax_g_cum = fields.Float(
+        string='Energy Tax G Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_durable_tax_e_cum = fields.Float(
+        string='Durable Tax E Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_durable_tax_g_cum = fields.Float(
+        string='Durable Tax G Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_total_cum = fields.Float(
+        string='Claim Original Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    nett_tax_total_cum = fields.Float(
+        string='Nett plus Tax Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    grand_total_cum = fields.Float(
+        string='Claim Grand Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_return_cum = fields.Float(
+        string='Tax Return Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_cum = fields.Float(
+        string='Tax Total Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_cost_cum = fields.Float(
+        string='Collection Cost Cum',
+        digits=dp.get_precision('claim'),
+        store=False,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_payment_cum = fields.Float(
+        string='Payment',
+        digits=dp.get_precision('claim'),
+        store=False,
         readonly=True,
         compute='_compute_amount'
     )
