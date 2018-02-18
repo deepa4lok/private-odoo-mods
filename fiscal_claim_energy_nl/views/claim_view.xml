@@ -10,6 +10,8 @@
             <field name="arch" type="xml">
                 <tree string="Claims">
                     <field name="batchcode"/>
+                    <field name="claim_date"/>
+                    <field name="last_line_date"/>
                     <field name="zpartner"/>
                     <field name="contrrek"/>
                     <field name="tax_return_sent"/>
@@ -40,6 +42,8 @@
                             <field string="Debtor" name="zpartner" />
                             <field name="partnersrt" />
                             <field name="batchcode"/>
+                            <field name="claim_date"/>
+                            <field name="last_line_date"/>
                         </group>
                         <group colspan="2" col="2">
                             <field name="amount_nett" />
@@ -78,9 +82,8 @@
                                     <!--field name="price_subtotal"/-->
                                 </tree>
                             </field>
-                            <div class="oe_clear">
-                                <label for="cost_line"/>
-                            </div>
+                        </page>
+                        <page string="Cost Lines">
                             <field name="cost_line">
                                 <tree string="Cost Lines" editable="bottom">
                                     <field name="sequence" widget="handle" />
@@ -178,7 +181,42 @@
                     	<filter name="group_by_debtor" string="Debtor" context="{'group_by':'zpartner'}"/>
                         <filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/>
                         <separator/>
-                        <!--filter string="Due Month" context="{'group_by':'date_due'}"/-->
+                        <filter string="Due Month" context="{'group_by':'last_line_date'}"/>
+                    </group>
+               </search>
+            </field>
+         </record>
+
+         <record id="payment_line_tree_view" model="ir.ui.view">
+            <field name="name">payment.line.tree.view</field>
+            <field name="model">payment.line</field>
+            <field name="view_type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Payment Lines" delete="true" edit="false" create="false">
+                    <field name="claim_id"/>
+                    <field name="date_payment"/>
+                    <field name="amount_payment" sum="Payments"/>
+                    <field name="docsoort"/>
+                    <field name="ref"/>
+                    <field name="docnr" />
+                </tree>
+            </field>
+        </record>
+        <record id="view_payment_line_filter" model="ir.ui.view">
+            <field name="name">payment.line.select</field>
+            <field name="model">payment.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Payment Line">
+                    <!--field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
+                    <filter name="tax_return" string="Tax Return" domain="[('tax_return_sent','=',True)]" help="Tax return processed"/>
+                    <separator/>
+                    <field name="zpartner" operator="child_of"/>
+                    <separator/-->
+                    <group expand="0" string="Group By">
+                    	<!--filter name="group_by_debtor" string="Debtor" context="{'group_by':'zpartner'}"/>
+                        <filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/-->
+                        <separator/>
+                        <filter string="Paid Month" context="{'group_by':'date_payment'}"/>
                     </group>
                </search>
             </field>

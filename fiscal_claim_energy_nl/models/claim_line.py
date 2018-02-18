@@ -218,7 +218,7 @@ class tax_return_line(models.Model):
     )
     docnr = fields.Char(
         string=_("Document Nr"),
-        required=True,
+        required=False,
         translate=False,
         readonly=False,
         size=32,

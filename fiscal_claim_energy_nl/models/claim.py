@@ -90,10 +90,14 @@ class claim(models.Model):
         self.amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
         self.amount_tax = self.amount_tax_orig + self.amount_tax_return
 
-
-
-
-
+    @api.one
+    @api.depends('claim_line.due_date'
+                 )
+    def _compute_last_date(self):
+        last_date = []
+        for line in self.claim_line:
+            last_date.append(line.due_date)
+        self.last_line_date = max(last_date)
 
 
     name = fields.Char(
@@ -110,6 +114,18 @@ class claim(models.Model):
         readonly=False,
         size=64
     )
+    claim_date = fields.Date(
+        string=_("Batch Date"),
+        required=True,
+        translate=False,
+        readonly=True,
+    )
+    last_line_date = fields.Date(
+        string='Last Line Date',
+        store=False,
+        readonly=True,
+        compute='_compute_last_date'
+    )
     claim_line = fields.One2many('claim.line', 'claim_id',
         string=_("Claim Line"),
         required=False,
@@ -122,21 +138,25 @@ class claim(models.Model):
         required=False,
         translate=False,
         readonly=False,
-        copy=True
+        copy=True,
+        track_visibility='onchange',
+
     )
     tax_return_line = fields.One2many('tax.return.line', 'claim_id',
         string=_("Tax Return Line"),
         required=False,
         translate=False,
         readonly=False,
-        copy=True
+        copy=True,
+        track_visibility = 'onchange',
     )
     payment_line = fields.One2many('payment.line', 'claim_id',
         string=_("Payment Line"),
         required=False,
         translate=False,
         readonly=False,
-        copy=True
+        copy=True,
+        track_visibility='onchange',
     )
     zpartner = fields.Char(
         string=_("Debtor"),
@@ -166,35 +186,40 @@ class claim(models.Model):
         #readonly=True,
         default=False,
         copy=False,
-        help="It indicates that the tax return has been sent."
+        help="It indicates that the tax return has been sent.",
+        track_visibility = 'onchange',
         )
     bankruptcy = fields.Boolean(
         string=_("Faillissement"),
         # readonly=True,
         default=False,
         copy=False,
-        help="It indicates that the debtor is in bankruptcy."
+        help="It indicates that the debtor is in bankruptcy.",
+        track_visibility='onchange',
     )
     wsnp = fields.Boolean(
         string=_("WSNP"),
         # readonly=True,
         default=False,
         copy=False,
-        help="It indicates that the debtor is in WSNP."
+        help="It indicates that the debtor is in WSNP.",
+        track_visibility='onchange',
     )
     sued = fields.Boolean(
         string=_("Dagvaarding"),
         # readonly=True,
         default=False,
         copy=False,
-        help="It indicates that the debtor has been sued."
+        help="It indicates that the debtor has been sued.",
+        track_visibility='onchange',
     )
     discharge = fields.Boolean(
         string=_("Finale Kwijting"),
         # readonly=True,
         default=False,
         copy=False,
-        help="It indicates that agreement with the debtor has been reached with discharge."
+        help="It indicates that agreement with the debtor has been reached with discharge.",
+        track_visibility='onchange',
     )
     comment = fields.Text('Additional Information'
         )
@@ -299,100 +324,104 @@ class claim(models.Model):
     amount_nett_cum = fields.Float(
         string='Nett Claim Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_tax_orig_cum = fields.Float(
         string='Tax Claim Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_vat_cum = fields.Float(
         string='VAT Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_energy_tax_e_cum = fields.Float(
         string='Energy Tax E Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_energy_tax_g_cum = fields.Float(
         string='Energy Tax G Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_durable_tax_e_cum = fields.Float(
         string='Durable Tax E Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_durable_tax_g_cum = fields.Float(
         string='Durable Tax G Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_total_cum = fields.Float(
         string='Claim Original Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     nett_tax_total_cum = fields.Float(
         string='Nett plus Tax Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     grand_total_cum = fields.Float(
         string='Claim Grand Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_tax_return_cum = fields.Float(
         string='Tax Return Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
-        compute='_compute_amount'
+        compute='_compute_amount',
+        track_visibility = 'always',
     )
     amount_tax_cum = fields.Float(
         string='Tax Total Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
-        compute='_compute_amount'
+        compute='_compute_amount',
+        track_visibility='always',
     )
     amount_cost_cum = fields.Float(
         string='Collection Cost Cum',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
-        compute='_compute_amount'
+        compute='_compute_amount',
+        track_visibility='always',
     )
     amount_payment_cum = fields.Float(
         string='Payment',
         digits=dp.get_precision('claim'),
-        store=False,
+        store=True,
         readonly=True,
-        compute='_compute_amount'
+        compute='_compute_amount',
+        track_visibility='always',
     )
     #due_date = fields.Date(
     #    string=_("Due Date"),
