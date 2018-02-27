@@ -257,6 +257,7 @@ class cost_line(models.Model):
     )
     docsoort = fields.Selection([
             ('KS','Incasso kosten?'),
+            ('IR', 'Interest'),
         ],
         string=_("Document Type"),
         required=True,

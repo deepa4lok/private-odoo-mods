@@ -139,6 +139,7 @@ To contribute to this module, please visit http://odoo-community.org.
     'qweb': [],
 
     'installable': True,
+    "post_init_hook": "post_init_hook",
     # Install this module automatically if all dependency have been previously
     # and independently installed.  Used for synergetic or glue modules.
     'auto_install': False,

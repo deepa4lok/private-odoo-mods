@@ -22,6 +22,7 @@
                     <field name="amount_durable_tax_e_cum" sum="Durable-E"/>
                     <field name="amount_durable_tax_g_cum" sum="Durable-G"/>
                     <field name="amount_tax_cum" sum="Tax"/>
+                    <field name="amount_tax_return" sum="Tax Return"/>
                     <field name="amount_payment" sum="Payment"/>
                     <field name="amount_cost" sum="Cost"/>
                     <field name="grand_total" sum="Total"/>
@@ -128,11 +129,11 @@
                             <group colspan="6" col="6">
                                 <group colspan="2" col="2">
                                     <field name="amount_nett_cum" />
-                                    <field name="amount_tax_cum" />
                                     <field name="nett_tax_total_cum" />
                                     <field name="amount_cost_cum" />
                                     <field name="grand_total_cum" />
                                     <field name="amount_payment_cum" />
+                                    <field name="amount_tax_return_cum" />
                                 </group>
                                 <group colspan="2" col="2">
                                     <field name="amount_vat_cum" />
@@ -140,7 +141,8 @@
                                     <field name="amount_energy_tax_g_cum" />
                                     <field name="amount_durable_tax_e_cum" />
                                     <field name="amount_durable_tax_g_cum" />
-                                    <field name="amount_tax_return_cum" />
+                                    <field name="amount_tax_cum" />
+
                                 </group>
                             </group>
                         </page>

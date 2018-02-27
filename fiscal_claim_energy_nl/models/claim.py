@@ -39,6 +39,7 @@ class claim(models.Model):
                  'cost_line.amount_cost', 'payment_line.amount_payment'
                  )
     def _compute_amount(self):
+
         self.amount_nett = sum(line.amount_nett for line in self.claim_line)
         self.amount_vat = sum(line.vat for line in self.claim_line)
         self.amount_energy_tax_e = sum(line.energy_tax_e for line in self.claim_line)
@@ -80,13 +81,13 @@ class claim(models.Model):
         self.amount_energy_tax_g_cum = self.amount_energy_tax_g * (1 + cost_part) - amount_tax_return_eg
         self.amount_durable_tax_g_cum = self.amount_durable_tax_g * (1 + cost_part) - amount_tax_return_dg
         self.amount_tax_return_cum = self.amount_vat_cum + self.amount_energy_tax_e_cum + self.amount_durable_tax_e_cum + self.amount_energy_tax_g_cum + self.amount_durable_tax_g_cum
-        self.amount_tax_cum = self.amount_tax_orig * (1 + cost_part)
+        self.amount_tax_cum = self.amount_tax_orig * (1 + cost_part) - amount_tax_return
 #        self.amount_cost_cum = 0
 #        self.amount_total_cum =
         self.amount_payment_cum = self.amount_payment
         self.nett_tax_total_cum = self.nett_tax_total + cost_cum
         self.grand_total_cum = self.grand_total - self.amount_payment
-        # even kijken wat dit moet wworden
+        # even kijken wat dit moet worden
         self.amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
         self.amount_tax = self.amount_tax_orig + self.amount_tax_return
 
@@ -122,7 +123,7 @@ class claim(models.Model):
     )
     last_line_date = fields.Date(
         string='Last Line Date',
-        store=False,
+        store=True,
         readonly=True,
         compute='_compute_last_date'
     )
