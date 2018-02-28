@@ -223,5 +223,39 @@
                </search>
             </field>
          </record>
+        <record id="cost_line_tree_view" model="ir.ui.view">
+            <field name="name">cost.line.tree.view</field>
+            <field name="model">cost.line</field>
+            <field name="view_type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Cost Lines" delete="true" edit="false" create="false">
+                    <field name="claim_id"/>
+                    <field name="due_date"/>
+                    <field name="amount_cost" sum="Costs"/>
+                    <field name="docsoort"/>
+                    <field name="ref"/>
+                    <field name="docnr" />
+                </tree>
+            </field>
+        </record>
+        <record id="view_cost_line_filter" model="ir.ui.view">
+            <field name="name">cost.line.select</field>
+            <field name="model">cost.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Cost Line">
+                    <!--field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
+                    <filter name="tax_return" string="Tax Return" domain="[('tax_return_sent','=',True)]" help="Tax return processed"/>
+                    <separator/>
+                    <field name="zpartner" operator="child_of"/>
+                    <separator/-->
+                    <group expand="0" string="Group By">
+                    	<filter name="group_by_claim" string="Claim" context="{'group_by':'claim_id'}"/>
+                        <!--filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/-->
+                        <separator/>
+                        <filter string="Post Month" context="{'group_by':'due_date'}"/>
+                    </group>
+               </search>
+            </field>
+         </record>
     </data>
 </openerp>
