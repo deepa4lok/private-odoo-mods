@@ -4,12 +4,12 @@
 
         <menuitem name="Claims"
                   id="menu_claims"
+                  groups="fiscal_claim_energy_nl.group_module_fiscal_claim_user"
                   />
         <menuitem name="Claims"
                   id="menu_claims_header"
                   parent="menu_claims"
                   sequence="10"
-                  groups=""
                   />
         <menuitem action="action_claims_view"
                   name="Claims"
