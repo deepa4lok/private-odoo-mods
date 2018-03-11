@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<openerp>
+<odoo>
     <data>
 
         <menuitem name="Claims"
                   id="menu_claims"
+                  groups="fiscal_claim_energy.group_module_fiscal_claim_user"
                   />
         <menuitem name="Claims"
                   id="menu_claims_header"
@@ -21,7 +22,7 @@
 
         <record id="action_claims_view" model="ir.actions.act_window">
             <field name="name">Debtors Claims</field>
-            <field name="res_model">claim</field>
+            <field name="res_model">fiscal.claim</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field eval="False" name="view_id"/>
@@ -45,7 +46,7 @@
 
         <record id="action_payment_line_view" model="ir.actions.act_window">
             <field name="name">Payment Lines</field>
-            <field name="res_model">payment.line</field>
+            <field name="res_model">claim.payment.line</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="view_payment_line_filter"/>
@@ -75,7 +76,7 @@
 
         <record id="action_cost_line_view" model="ir.actions.act_window">
             <field name="name">Cost Lines</field>
-            <field name="res_model">cost.line</field>
+            <field name="res_model">claim.cost.line</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="view_cost_line_filter"/>
@@ -106,4 +107,4 @@
 
 
     </data>
-</openerp>
+</odoo>

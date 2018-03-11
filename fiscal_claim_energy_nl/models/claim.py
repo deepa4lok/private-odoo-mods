@@ -23,9 +23,9 @@ from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 
 class claim(models.Model):
-    _name = "claim"
+    _name = "fiscal.claim"
     _inherit = ['mail.thread']
-    _description = "Claim"
+    _description = "Fiscal Claim"
     _order = "id desc"
     _track = {
         'Teruggaaf': {
@@ -127,14 +127,14 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_last_date'
     )
-    claim_line = fields.One2many('claim.line', 'claim_id',
+    claim_line = fields.One2many('fiscal.claim.line', 'claim_id',
         string=_("Claim Line"),
         required=False,
         translate=False,
         readonly=False,
         copy=True
     )
-    cost_line = fields.One2many('cost.line', 'claim_id',
+    cost_line = fields.One2many('claim.cost.line', 'claim_id',
         string=_("Cost Lines"),
         required=False,
         translate=False,
@@ -143,7 +143,7 @@ class claim(models.Model):
         track_visibility='onchange',
 
     )
-    tax_return_line = fields.One2many('tax.return.line', 'claim_id',
+    tax_return_line = fields.One2many('claim.tax.return.line', 'claim_id',
         string=_("Tax Return Line"),
         required=False,
         translate=False,
@@ -151,7 +151,7 @@ class claim(models.Model):
         copy=True,
         track_visibility = 'onchange',
     )
-    payment_line = fields.One2many('payment.line', 'claim_id',
+    payment_line = fields.One2many('claim.payment.line', 'claim_id',
         string=_("Payment Line"),
         required=False,
         translate=False,

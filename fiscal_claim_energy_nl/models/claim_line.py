@@ -22,8 +22,8 @@ from openerp import models, fields, api, _
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 
-class claim_line(models.Model):
-    _name = "claim.line"
+class FiscalClaimLine(models.Model):
+    _name = "fiscal.claim.line"
 
     @api.one
     @api.depends('nett_amount', 'vat', 'energy_tax_e', 'energy_tax_g',
@@ -142,8 +142,8 @@ class claim_line(models.Model):
         readonly=False
     )
 
-class tax_return_line(models.Model):
-    _name = "tax.return.line"
+class ClaimTaxReturnLine(models.Model):
+    _name = "claim.tax.return.line"
 
     @api.one
     @api.depends('vat_return', 'energy_tax_e_return', 'energy_tax_g_return',
@@ -230,8 +230,8 @@ class tax_return_line(models.Model):
         readonly=False
     )
 
-class cost_line(models.Model):
-    _name = "cost.line"
+class ClaimCostLine(models.Model):
+    _name = "claim.cost.line"
 
 
     sequence = fields.Integer(
@@ -279,8 +279,8 @@ class cost_line(models.Model):
         size=32,
     )
 
-class payment_line(models.Model):
-    _name = "payment.line"
+class ClaimPaymentLine(models.Model):
+    _name = "claim.payment.line"
 
 
     sequence = fields.Integer(

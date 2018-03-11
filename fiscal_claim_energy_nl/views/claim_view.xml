@@ -4,7 +4,7 @@
         <!-- TODO: put here a reminder on what to do at the first edition -->
         <record id="claim_tree_view" model="ir.ui.view">
             <field name="name">claim.tree.view.view</field>
-            <field name="model">claim</field>
+            <field name="model">fiscal.claim</field>
             <field name="view_type">tree</field>
             <field name="inherit_id" ref=""/>
             <field name="arch" type="xml">
@@ -32,7 +32,7 @@
 
         <record id="claims_form" model="ir.ui.view">
             <field name="name">claim.form</field>
-            <field name="model">claim</field>
+            <field name="model">fiscal.claim</field>
             <field name="priority">2</field>
             <field name="arch" type="xml">
                 <form string="Claims">
@@ -171,7 +171,7 @@
 
          <record id="view_claims_filter" model="ir.ui.view">
             <field name="name">claim.select</field>
-            <field name="model">claim</field>
+            <field name="model">fiscal.claim</field>
             <field name="arch" type="xml">
                 <search string="Search Claim">
                     <field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
@@ -191,7 +191,7 @@
 
          <record id="payment_line_tree_view" model="ir.ui.view">
             <field name="name">payment.line.tree.view</field>
-            <field name="model">payment.line</field>
+            <field name="model">claim.payment.line</field>
             <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Payment Lines" delete="true" edit="false" create="false">
@@ -206,7 +206,7 @@
         </record>
         <record id="view_payment_line_filter" model="ir.ui.view">
             <field name="name">payment.line.select</field>
-            <field name="model">payment.line</field>
+            <field name="model">claim.payment.line</field>
             <field name="arch" type="xml">
                 <search string="Search Payment Line">
                     <!--field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
@@ -225,7 +225,7 @@
          </record>
         <record id="cost_line_tree_view" model="ir.ui.view">
             <field name="name">cost.line.tree.view</field>
-            <field name="model">cost.line</field>
+            <field name="model">claim.cost.line</field>
             <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Cost Lines" delete="true" edit="false" create="false">
@@ -240,7 +240,7 @@
         </record>
         <record id="view_cost_line_filter" model="ir.ui.view">
             <field name="name">cost.line.select</field>
-            <field name="model">cost.line</field>
+            <field name="model">claim.cost.line</field>
             <field name="arch" type="xml">
                 <search string="Search Cost Line">
                     <!--field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
