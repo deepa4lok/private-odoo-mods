@@ -35,9 +35,9 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===========
+=======================
 Fiscal Claim Energy NL
-===========
+=======================
 
 This module was written to handle the tax returns of cession claims portfolios in the energy industry in the netherlands
 and allows you to import batches of claims assigned to assignee (or debt trader)
@@ -125,6 +125,8 @@ To contribute to this module, please visit http://odoo-community.org.
 
     # always loaded
     'data': [
+            'security/security.xml',
+            'security/ir.model.access.csv',
             'views/claim_view.xml',
             'views/ir_ui_menus.xml',
     ],

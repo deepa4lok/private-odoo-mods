@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_fiscal_claim_user,claim.user,model_claim,fiscal_claim_energy_nl.group_module_fiscal_claim_user,1,1,1,1
-access_fiscal_claim_line_user,claim.line.user,model_claim_line,fiscal_claim_energy_nl.group_module_claim_user,1,1,1,1
-access_claim_cost_line_user,cost.line.user,model_cost_line,fiscal_claim_energy_nl.group_module_claim_user,1,1,1,1
-access_claim_tax_return_line_user,tax.return.line.user,model_tax_return_line,fiscal_claim_energy_nl.group_module_claim_user,1,1,1,1
-access_claim_payment_line_user,payment.line.user,model_payment_line,fiscal_claim_energy_nl.group_module_claim_user,1,1,1,1
+access_fiscal_claim_line_user,claim.line.user,model_claim_line,fiscal_claim_energy_nl.group_module_fiscal_claim_user,1,1,1,1
+access_claim_cost_line_user,cost.line.user,model_cost_line,fiscal_claim_energy_nl.group_module_fiscal_claim_user,1,1,1,1
+access_claim_tax_return_line_user,tax.return.line.user,model_tax_return_line,fiscal_claim_energy_nl.group_module_fiscal_claim_user,1,1,1,1
+access_claim_payment_line_user,payment.line.user,model_payment_line,fiscal_claim_energy_nl.group_module_fiscal_claim_user,1,1,1,1
 
