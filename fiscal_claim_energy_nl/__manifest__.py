@@ -117,7 +117,7 @@ To contribute to this module, please visit http://odoo-community.org.
 
     # any module necessary for this one to work correctly
     'depends': ['decimal_precision',
-                'mail',
+                'mail','mis_builder',
     ],
     'external_dependencies': {
         'python': [],

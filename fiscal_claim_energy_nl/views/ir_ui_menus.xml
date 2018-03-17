@@ -18,6 +18,33 @@
                   sequence="2"
                   groups=""
                   />
+        <!--MIS-builder menu -->
+        <menuitem id="mis_report_finance_menu"
+                  parent="menu_claims_header"
+                  name="MIS Reporting"
+                  sequence="101"/>
+        <menuitem id="mis_report_view_menu"
+                  parent="mis_report_finance_menu"
+                  name="MIS Report Templates"
+                  action="mis_builder.mis_report_view_action"
+                  sequence="21"/>
+        <menuitem id="mis_report_instance_view_menu"
+                  parent="mis_report_finance_menu"
+                  name="MIS Reports"
+                  action="mis_builder.mis_report_instance_view_action"
+                  sequence="10"/>
+        <menuitem id="last_wizard_mis_report_instance_view_menu"
+                  parent="mis_report_finance_menu"
+                  name="Last Reports Generated"
+                  action="mis_builder.last_mis_report_instance_view_action"
+                  sequence="20"/>
+        <menuitem id="mis_report_style_view_menu"
+                  parent="mis_report_finance_menu"
+                  name="MIS Report Styles"
+                  action="mis_builder.mis_report_style_view_action"
+                  sequence="22"/>
+
+
 
         <record id="action_claims_view" model="ir.actions.act_window">
             <field name="name">Debtors Claims</field>
