@@ -98,7 +98,7 @@ class claim(models.Model):
         last_date = []
         for line in self.claim_line:
             last_date.append(line.due_date)
-        self.last_line_date = max(last_date)
+            self.last_line_date = max(last_date) if len(last_date) > 0 else False
 
 
     name = fields.Char(
