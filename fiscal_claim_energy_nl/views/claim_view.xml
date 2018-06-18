@@ -195,7 +195,7 @@
             <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Payment Lines" delete="true" edit="false" create="false">
-                    <field name="claim_id"/>
+                    <field name="contract_number"/>
                     <field name="date_payment"/>
                     <field name="amount_payment" sum="Payments"/>
                     <field name="docsoort"/>
@@ -229,7 +229,7 @@
             <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Cost Lines" delete="true" edit="false" create="false">
-                    <field name="claim_id"/>
+                    <field name="contract_number"/>
                     <field name="due_date"/>
                     <field name="amount_cost" sum="Costs"/>
                     <field name="docsoort"/>

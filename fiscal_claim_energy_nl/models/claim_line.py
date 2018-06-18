@@ -51,6 +51,11 @@ class claim_line(models.Model):
         ondelete='cascade',
         index=True
     )
+    contract_number = fields.Char(
+        related='claim_id.contrrek',
+        string='Contract',
+        store=True
+    )
     amount_tax = fields.Float(
         string='Tax',
         digits=dp.get_precision('claim'),
@@ -164,6 +169,12 @@ class tax_return_line(models.Model):
         ondelete='cascade',
         index=True
     )
+    contract_number = fields.Char(
+        related='claim_id.contrrek',
+        string='Contract',
+        store=True,
+        readonly=True
+    )
     amount_tax_return_total= fields.Float(
         string='Tax',
         digits=dp.get_precision('claim'),
@@ -244,6 +255,12 @@ class cost_line(models.Model):
         ondelete='cascade',
         index=True
     )
+    contract_number = fields.Char(
+        related='claim_id.contrrek',
+        string='Contract',
+        store=True,
+        readonly=True
+    )
     amount_cost = fields.Float(
         string='Cost',
         digits=dp.get_precision('claim'),
@@ -292,6 +309,12 @@ class payment_line(models.Model):
         string='Claim Reference',
         ondelete='cascade',
         index=True
+    )
+    contract_number = fields.Char(
+        related='claim_id.contrrek',
+        string='Contract',
+        store=True,
+        readonly=True
     )
     amount_payment = fields.Float(
         string='Payment',
