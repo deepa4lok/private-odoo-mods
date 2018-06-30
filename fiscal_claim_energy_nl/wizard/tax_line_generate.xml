@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_generate_claim_tax_line" model="ir.ui.view">
+            <field name="name">Generate Claim Tax Lines</field>
+            <field name="model">claim.tax.line.gen</field>
+            <field name="arch" type="xml">
+                <form string="Generate Tax Declaration Lines" >
+                    <group>
+                        <field name="declaration" string="Tax Declaration"/>
+                        <field name="job_queue" string="Via Job Queue"/>
+                        <field name="chunk_size" string="Chunk Size Job Queue"
+                               attrs="{'required':[('job_queue','=',True)],
+                                       'invisible': [('job_queue','!=', True)]}"/>
+                        <field name="execution_datetime"
+                               attrs="{'invisible': [('job_queue','!=', True)]}"/>
+                    </group>
+                    <p class="oe_grey">
+                        All eligible claims in this Declaration will be processed.
+                    </p>
+                    <footer>
+                        <button name="generate_tax_lines" string="Calculate Tax Return" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_view_generate_claim_tax_line" model="ir.actions.act_window">
+            <field name="name">Calculate Tax Return</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">claim.tax.line.gen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_generate_claim_tax_line"/>
+            <field name="target">new</field>
+            <!--field name="groups_id" eval="[(4, ref('sale_advertising_order.group_advertising_sales_user'))]"/-->
+        </record>
+
+
+
+        <record model="ir.values" id="ad_order_make_invoice">
+            <field name="model_id" ref="model_tax_declaration" />
+            <field name="name">Make Invoices</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_view_generate_claim_tax_line'))" />
+            <field name="key">action</field>
+            <field name="model">tax.declaration</field>
+        </record>
+    </data>
+</odoo>

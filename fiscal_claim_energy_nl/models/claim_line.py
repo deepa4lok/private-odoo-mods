@@ -96,12 +96,12 @@ class claim_line(models.Model):
         readonly=False
     )
     docsoort = fields.Selection([
-            ('DF','Hoofdsom?'),
+            ('DF','Hoofdsom'),
             ('EF','Kweenie1'),
             ('SF','Kweenie2'),
             ('AB','Kweenie3'),
-            ('KS','Incasso kosten?'),
-            ('FA','Correctie?'),
+            ('KS','Incasso kosten'),
+            ('FA','Correctie'),
         ],
         string=_("Document Type"),
         required=True,
@@ -147,99 +147,6 @@ class claim_line(models.Model):
         readonly=False
     )
 
-class tax_return_line(models.Model):
-    _name = "tax.return.line"
-
-    @api.one
-    @api.depends('vat_return', 'energy_tax_e_return', 'energy_tax_g_return',
-        'durable_tax_e_return', 'durable_tax_g_return')
-    def _compute_amount(self):
-        #import pdb; pdb.set_trace()
-        self.amount_tax_return_total = self.vat_return + self.energy_tax_e_return + self.energy_tax_g_return + self.durable_tax_e_return + self.durable_tax_g_return
-
-
-
-    sequence = fields.Integer(
-        string='Sequence',
-        default=10,
-        help="Gives the sequence of this line when displaying the invoice."
-    )
-    claim_id = fields.Many2one('claim',
-        string='Claim Reference',
-        ondelete='cascade',
-        index=True
-    )
-    contract_number = fields.Char(
-        related='claim_id.contrrek',
-        string='Contract',
-        store=True,
-        readonly=True
-    )
-    amount_tax_return_total= fields.Float(
-        string='Tax',
-        digits=dp.get_precision('claim'),
-        store=True,
-        readonly=True,
-        compute='_compute_amount'
-    )
-    date_tax_request = fields.Date(
-        string=_("Date Tax Request"),
-        required=True,
-        translate=False,
-        readonly=False
-    )
-    energy_tax_g_return = fields.Float(
-        string=_("Energy Tax E Return"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
-    docsoort = fields.Selection([
-            ('TR','Tax Return'),
-        ],
-        string=_("Document Type"),
-        required=True,
-        translate=False,
-        readonly=False
-    )
-    durable_tax_e_return = fields.Float(
-        string=_("Durable Tax E Return"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
-    ref = fields.Char(
-        string=_("Reference"),
-        required=False,
-        translate=False,
-        readonly=False,
-        size=64,
-    )
-    durable_tax_g_return = fields.Float(
-        string=_("Durable Tax G Return"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
-    vat_return = fields.Float(
-        string=_("VAT Return"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
-    docnr = fields.Char(
-        string=_("Document Nr"),
-        required=False,
-        translate=False,
-        readonly=False,
-        size=32,
-    )
-    energy_tax_e_return = fields.Float(
-        string=_("Energy Tax E Return"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
 
 class cost_line(models.Model):
     _name = "cost.line"
@@ -345,7 +252,7 @@ class payment_line(models.Model):
     )
     docnr = fields.Char(
         string=_("Document Nr"),
-        required=False,
+        required=True,
         translate=False,
         readonly=False,
         size=32,

@@ -20,3 +20,4 @@
 
 from . import claim
 from . import claim_line
+from . import tax_declaration

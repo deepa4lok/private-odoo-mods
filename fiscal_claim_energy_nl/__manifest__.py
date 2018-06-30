@@ -129,6 +129,7 @@ To contribute to this module, please visit http://odoo-community.org.
             'security/ir.model.access.csv',
             'views/claim_view.xml',
             'views/ir_ui_menus.xml',
+            'wizard/tax_line_generate.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
