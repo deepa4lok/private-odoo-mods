@@ -437,7 +437,7 @@ class claim(models.Model):
         track_visibility='always',
     )
 
-    @job
+    '''@job
     @api.multi
     def generate_tax_split_lines_jq(self, declaration, eta, size):
         chunk = False
@@ -468,7 +468,7 @@ class claim(models.Model):
                     self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)
                     chunk = False
             if chunk:
-                self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)
+                self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)'''
 
     @job
     @api.multi
