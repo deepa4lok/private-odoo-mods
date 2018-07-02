@@ -21,6 +21,8 @@
 from openerp import models, fields, api, _
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
+from odoo.addons.queue_job.job import job, related_action
+from odoo.addons.queue_job.exception import FailedJobError
 
 class claim(models.Model):
     _name = "claim"
@@ -435,6 +437,40 @@ class claim(models.Model):
         track_visibility='always',
     )
 
+    @job
+    @api.multi
+    def generate_tax_split_lines_jq(self, declaration, eta, size):
+        chunk = False
+        for claim in self:
+            chunk = claim if not chunk else chunk | claim
+            if len(chunk) < size:
+                continue
+            chunk.with_delay(eta=eta).generate_tax_lines_from_claim(declaration)
+            chunk = False
+                lines = recordset.filtered(lambda r: r.order_id.partner_invoice_id.id == partner.id)
+                if len(lines) > size:
+                    published_customer = lines.filtered('order_id.published_customer').mapped(
+                        'order_id.published_customer')
+                    for pb in published_customer:
+                        claimlinespb = lines.filtered(lambda r: r.order_id.published_customer.id == pb.id)
+                        chunk = linespb if not chunk else chunk | linespb
+                        if len(chunk) < size:
+                            continue
+                        self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)
+                        chunk = False
+                    remaining_lines = lines.filtered(lambda r: not r.order_id.published_customer)
+                    chunk = remaining_lines if not chunk else chunk | remaining_lines
+                    self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)
+                else:
+                    chunk = lines if not chunk else chunk | lines
+                    if len(chunk) < size:
+                        continue
+                    self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)
+                    chunk = False
+            if chunk:
+                self.with_delay(eta=eta).make_invoices_job_queue(inv_date, post_date, chunk)
+
+    @job
     @api.multi
     def generate_tax_lines_from_claim(self, declaration):
         context = self._context
