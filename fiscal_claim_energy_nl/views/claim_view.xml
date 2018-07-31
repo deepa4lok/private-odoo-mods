@@ -75,13 +75,13 @@
                                     <field name="docsoort" />
                                     <field name="due_date" />
                                     <field name="bdn" />
-                                    <field name="amount_total"/>
-                                    <field name="nett_amount"/>
-                                    <field name="vat" />
-                                    <field name="energy_tax_e"/>
-                                    <field name="energy_tax_g" />
-                                    <field name="durable_tax_e" />
-                                    <field name="durable_tax_g" />
+                                    <field name="amount_total" sum="Total"/>
+                                    <field name="nett_amount" sum="Nett"/>
+                                    <field name="vat" sum="Vat"/>
+                                    <field name="energy_tax_e" sum="E-tax"/>
+                                    <field name="energy_tax_g" sum="G-tax"/>
+                                    <field name="durable_tax_e" sum="Durable-E"/>
+                                    <field name="durable_tax_g" sum="Durable-G"/>
                                     <!--field name="price_subtotal"/-->
                                 </tree>
                             </field>
@@ -95,7 +95,7 @@
                                     <field name="docnr"/>
                                     <field name="docsoort" />
                                     <field name="due_date" />
-                                    <field name="amount_cost"/>
+                                    <field name="amount_cost" sum="Total Cost"/>
                                 </tree>
                             </field>
                         </page>
@@ -108,12 +108,12 @@
                                     <field name="docnr"/>
                                     <field name="docsoort" />
                                     <field name="date_tax_request" />
-                                    <field name="amount_tax_return_total"/>
-                                    <field name="energy_tax_e_return"/>
-                                    <field name="energy_tax_g_return"/>
-                                    <field name="durable_tax_e_return"/>
-                                    <field name="durable_tax_g_return"/>
-                                    <field name="vat_return"/>
+                                    <field name="amount_tax_return_total" sum="Tax Total"/>
+                                    <field name="energy_tax_e_return" sum="Tax-E"/>
+                                    <field name="energy_tax_g_return" sum="Tax-G"/>
+                                    <field name="durable_tax_e_return" sum="Durable-E"/>
+                                    <field name="durable_tax_g_return" sum="Durable-G"/>
+                                    <field name="vat_return" sum="VAT"/>
                                     <field name="state"/>
                                 </tree>
                             </field>
@@ -126,7 +126,7 @@
                                     <field name="create_date"/>
                                     <field name="docnr"/>
                                     <field name="docsoort" />
-                                    <field name="amount_payment" />
+                                    <field name="amount_payment" sum="Total Payments"/>
                                     <field name="date_payment"/>
                                 </tree>
                             </field>
