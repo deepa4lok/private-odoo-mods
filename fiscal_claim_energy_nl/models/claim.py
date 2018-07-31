@@ -164,7 +164,7 @@ class claim(models.Model):
     )
     zpartner = fields.Char(
         string=_("Debtor"),
-        required=True,
+        required=False,
         translate=False,
         readonly=False,
         size=64,
@@ -174,7 +174,7 @@ class claim(models.Model):
             ('KZM','Kein Zakelijk'),
         ],
         string='Debtor Type',
-        required=True,
+        required=False,
         translate=False,
         readonly=False
     )
