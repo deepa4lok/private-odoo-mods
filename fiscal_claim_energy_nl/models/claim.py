@@ -122,7 +122,7 @@ class claim(models.Model):
         string=_("Batch Date"),
         required=True,
         translate=False,
-        readonly=True,
+        readonly=False,
     )
     last_line_date = fields.Date(
         string='Last Line Date',
