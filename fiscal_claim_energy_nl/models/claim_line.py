@@ -100,6 +100,7 @@ class claim_line(models.Model):
             ('EF','Kweenie1'),
             ('SF','Kweenie2'),
             ('AB','Kweenie3'),
+            ('BA', 'Kweenie4'),
             ('KS','Incasso kosten'),
             ('FA','Correctie'),
         ],
