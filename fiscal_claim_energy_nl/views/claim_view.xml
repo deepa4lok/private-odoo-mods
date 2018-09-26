@@ -188,8 +188,9 @@
                     <group expand="0" string="Group By">
                     	<filter name="group_by_debtor" string="Debtor" context="{'group_by':'zpartner'}"/>
                         <filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/>
+                        <filter name="group_by_batchdate" string="Batch Date" context="{'group_by':'claim_date'}"/>
                         <separator/>
-                        <filter string="Due Month" context="{'group_by':'last_line_date'}"/>
+                        <filter name="group_by_duemonth" string="Due Month" context="{'group_by':'last_line_date'}"/>
                     </group>
                </search>
             </field>
