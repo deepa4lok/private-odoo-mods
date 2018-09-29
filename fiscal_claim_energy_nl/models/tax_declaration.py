@@ -26,6 +26,14 @@ from odoo.exceptions import UserError, ValidationError
 class TaxDeclaration(models.Model):
     _name = "tax.declaration"
 
+    @api.one
+    @api.depends('tax_return_line.amount_tax_return_total')
+    def _compute_amount(self):
+        self.vat_return = vat_return = sum(line.vat_return for line in self.tax_return_line)
+        self.total_tax_return = total_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
+        self.e_tax_return = total_tax_return - vat_return
+
+
     name = fields.Char('Description')
     comment = fields.Text('Note')
     from_invoice_date = fields.Date('From Claim Line Date', default='2000-01-01')
@@ -43,7 +51,7 @@ class TaxDeclaration(models.Model):
                                 ('submitted', 'Submitted'),
                                 ('accepted', 'Accepted'),
                                 ('cancel', 'Cancelled'),
-                                ], string='Cutoff Concept', readonly=True, copy=False, store=True, default='draft'
+                                ], string='State', readonly=True, copy=False, store=True, default='draft'
                             )
     tax_return_line = fields.One2many('tax.return.line', 'declaration_id',
                                       string=_("Tax Line"),
@@ -53,6 +61,22 @@ class TaxDeclaration(models.Model):
                                       copy=False,
                                       track_visibility='onchange',
                                       )
+    vat_return = fields.Float(string='Vat Return',
+                            digits=dp.get_precision('claim'),
+                            store=True,
+                            readonly=True,
+                            compute='_compute_amount')
+    e_tax_return = fields.Float(string='E Tax Return',
+                              digits=dp.get_precision('claim'),
+                              store=True,
+                              readonly=True,
+                              compute='_compute_amount')
+    total_tax_return = fields.Float(string='Total Tax Return',
+                                digits=dp.get_precision('claim'),
+                                store=True,
+                                readonly=True,
+                                compute='_compute_amount')
+
 
     @api.multi
     @api.constrains('from_invoice_date', 'to_invoice_date', 'from_batch_date', 'to_batch_date')

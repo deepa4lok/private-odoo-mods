@@ -327,6 +327,9 @@
                     <field name="to_batch_date"/>
                     <field name="cutoff"/>
                     <field name="date_tax_request" />
+                    <field name="vat_return"/>
+                    <field name="e_tax_return"/>
+                    <field name="total_tax_return"/>
                     <field name="state" />
                 </tree>
             </field>
@@ -339,7 +342,7 @@
             <field name="arch" type="xml">
                 <form string="Tax Declaration">
                     <sheet string="Tax Declaration">
-                        <group colspan="4" col="4">
+                        <group colspan="6" col="6">
                             <group colspan="2" col="2">
                                 <field name="name"/>
                                 <field name="cutoff" />
@@ -348,9 +351,17 @@
                             <group colspan="2" col="2">
                                 <field name="from_invoice_date" />
                                 <field name="to_invoice_date"/>
+                            </group>
+                            <group colspan="2" col="2">
                                 <field name="from_batch_date"/>
                                 <field name="to_batch_date"/>
                             </group>
+                            <group colspan="6" col="6">
+                                <field name="vat_return"/>
+                                <field name="e_tax_return"/>
+                                <field name="total_tax_return"/>
+                            </group>
+
                         </group>
                         <notebook>
                             <page string="Tax Lines">
