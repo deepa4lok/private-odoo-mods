@@ -65,9 +65,20 @@ class ClaimTaxLineGen(models.TransientModel):
                                                    ('claim_date','<=', decl.to_batch_date),
                                                    ('amount_tax_cum','!=', 0)])
                 ctx['cutoff'] = 'last_line'
-            claims.with_context(ctx).generate_tax_lines_from_claim(decl)
+            if self.job_queue:
+                self.with_context(ctx).with_delay()._split_jobs(claims, decl)
+            else:
+                claims.with_context(ctx).generate_tax_lines_from_claim(decl)
         return True
 
+    @job
+    def _split_jobs(self, claims, declaration):
+        size = self.chunk_size
+        ctx = self._context
+        eta = fields.Datetime.from_string(self.execution_datetime)
+        for x in xrange(0, len(claims), size):
+            chunk = claims[x:x + size]
+            chunk.with_context(ctx).with_delay(eta=eta).generate_tax_lines_from_claim(declaration)
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

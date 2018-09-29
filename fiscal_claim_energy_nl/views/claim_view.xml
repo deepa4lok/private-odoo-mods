@@ -276,6 +276,7 @@
             <field name="arch" type="xml">
                 <tree string="Tax Lines" delete="true" edit="false" create="true">
                     <field name="claim_id"/>
+                    <field name="declaration_id"/>
                     <field name="contract_number"/>
                     <field name="date_tax_request"/>
                     <field name="docsoort"/>
@@ -307,6 +308,7 @@
                         <separator/>
                         <filter string="Create Month" context="{'group_by':'create_date'}"/>
                         <filter string="Request Month" context="{'group_by':'date_tax_request'}"/>
+                        <filter string="Tax declaration" context="{'group_by':'declaration_id'}"/>
                     </group>
                </search>
             </field>

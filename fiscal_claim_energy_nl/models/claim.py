@@ -21,6 +21,9 @@
 from openerp import models, fields, api, _
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
+from odoo.exceptions import UserError, ValidationError
+from odoo.addons.queue_job.job import job, related_action
+from odoo.addons.queue_job.exception import FailedJobError
 
 class claim(models.Model):
     _name = "claim"
@@ -435,6 +438,7 @@ class claim(models.Model):
         track_visibility='always',
     )
 
+    @job
     @api.multi
     def generate_tax_lines_from_claim(self, declaration):
         context = self._context
@@ -474,6 +478,10 @@ class claim(models.Model):
             vals = self.compute_amount(claim_lines)
             vals['declaration_id'] = declaration.id
             vals['date_tax_request'] = declaration.date_tax_request
+            if abs(vals['energy_tax_e_return']) < 0.01 and abs(vals['energy_tax_g_return']) < 0.01 \
+                and abs(vals['vat_return']) < 0.01 and abs(vals['durable_tax_e_return']) < 0.01 \
+                and abs(vals['durable_tax_g_return']) < 0.01:
+                return
             self.env['tax.return.line'].create(vals)
         return True
 
@@ -490,10 +498,13 @@ class claim(models.Model):
         var_amount_durable_tax_e = durable_tax_e if durable_tax_e > 0 else 0
         var_amount_energy_tax_g = energy_tax_g if energy_tax_g > 0 else 0
         var_amount_durable_tax_g = durable_tax_g if durable_tax_g > 0 else 0
-        var_amount_tax_claim = var_amount_vat + var_amount_energy_tax_e + var_amount_durable_tax_e + \
-                               var_amount_energy_tax_g + var_amount_durable_tax_g
+
+
+
         var_amount_tax_orig = sum(line.amount_tax for line in claim_line)
+
         var_amount_cost = sum(line.amount_cost for line in self.cost_line)
+
         var_amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
         amount_tax_return_ee = sum(line.energy_tax_e_return for line in self.tax_return_line)
         amount_tax_return_de = sum(line.durable_tax_e_return for line in self.tax_return_line)
@@ -501,8 +512,13 @@ class claim(models.Model):
         amount_tax_return_dg = sum(line.durable_tax_g_return for line in self.tax_return_line)
         amount_tax_return_vat = sum(line.vat_return for line in self.tax_return_line)
         amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
+
         #        self.amount_total = sum(line.amount_total for line in self.claim_line)
+
         var_amount_payment = sum(line.amount_payment for line in self.payment_line)
+
+        var_amount_tax_claim = var_amount_vat + var_amount_energy_tax_e + var_amount_durable_tax_e + \
+                               var_amount_energy_tax_g + var_amount_durable_tax_g
         var_nett_tax_total = var_amount_tax_orig + var_amount_nett
         var_grand_total = var_amount_tax_orig + var_amount_cost + var_amount_nett
 
@@ -524,14 +540,18 @@ class claim(models.Model):
         var_amount_durable_tax_e_cum = var_amount_durable_tax_e * (1 - part) - amount_tax_return_de
         var_amount_energy_tax_g_cum = var_amount_energy_tax_g * (1 - part) - amount_tax_return_eg
         var_amount_durable_tax_g_cum = var_amount_durable_tax_g * (1 - part) - amount_tax_return_dg
+
         var_amount_tax_return_cum = var_amount_vat_cum + var_amount_energy_tax_e_cum + var_amount_durable_tax_e_cum + \
                                     var_amount_energy_tax_g_cum + var_amount_durable_tax_g_cum
+
         var_amount_tax_cum = var_amount_tax_claim * (1 - part) - amount_tax_return
+
         var_nett_tax_total_cum = var_nett_tax_total + var_amount_tax_cum
         var_grand_total_cum = var_grand_total - var_amount_payment
+
         # even kijken wat dit moet worden
-        var_amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
         var_amount_tax = var_amount_tax_claim - var_amount_tax_return
+
         vals = {
             'claim_id': self.id,
             'energy_tax_e_return': var_amount_energy_tax_e_cum,

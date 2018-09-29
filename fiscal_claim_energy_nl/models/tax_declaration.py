@@ -21,6 +21,7 @@
 from openerp import models, fields, api, _
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
+from odoo.exceptions import UserError, ValidationError
 
 class TaxDeclaration(models.Model):
     _name = "tax.declaration"
@@ -49,7 +50,7 @@ class TaxDeclaration(models.Model):
                                       required=False,
                                       translate=False,
                                       readonly=False,
-                                      copy=True,
+                                      copy=False,
                                       track_visibility='onchange',
                                       )
 
