@@ -61,7 +61,7 @@ class TaxDeclaration(models.Model):
                                       copy=False,
                                       track_visibility='onchange',
                                       )
-    vat_return = fields.Float(string='Vat Return',
+    vat_return = fields.Float(string='VAT Return',
                             digits=dp.get_precision('claim'),
                             store=True,
                             readonly=True,
