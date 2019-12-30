@@ -36,9 +36,10 @@ class claim(models.Model):
     }
 
     @api.one
-    @api.depends('claim_line'
+    @api.depends('claim_line',
                  'tax_return_line',
-                 'cost_line', 'payment_line'
+                 'cost_line',
+                 'payment_line'
                  )
     def _compute_amount(self):
         self.orig_tax = var_orig_tax = sum(line.amount_tax for line in self.claim_line)
