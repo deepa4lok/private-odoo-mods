@@ -52,7 +52,7 @@
                             <field name="nett_tax_total" />
                             <field name="amount_cost" />
                             <field name="amount_payment" />
-                            <field name="grand_total" />
+                            <field name="amount_total" />
                         </group>
                         <group colspan="2" col="2">
                             <field name="amount_vat" />
