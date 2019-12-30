@@ -148,7 +148,6 @@
                                     <field name="amount_cost_cum" />
                                     <field name="grand_total_cum" />
                                     <field name="amount_payment_cum" />
-                                    <field name="amount_tax_return_cum" />
                                 </group>
                                 <group colspan="2" col="2">
                                     <field name="amount_vat_cum" />
