@@ -386,6 +386,48 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_amount'
     )
+    amount_tax_return_ee = fields.Float(
+        string='EE Tax Eeturned',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_return_de = fields.Float(
+        string='DE Tax Returned',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_return_eg = fields.Float(
+        string='EG Tax Returned',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_return_dg = fields.Float(
+        string='DG Tax Returned',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_return_energy = fields.Float(
+        string='Energy Tax Returned',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    amount_tax_return_vat = fields.Float(
+        string='VAT Returned',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
     amount_nett_cum = fields.Float(
         string='Nett Claim Total Cum',
         digits=dp.get_precision('claim'),
