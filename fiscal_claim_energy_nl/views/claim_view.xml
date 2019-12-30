@@ -15,15 +15,11 @@
                     <field name="zpartner"/>
                     <field name="contrrek"/>
                     <field name="tax_return_sent"/>
-                    <field name="grand_total" sum="Total"/>
                     <field name="amount_nett" sum="Nett"/>
                     <field name="amount_vat_cum" sum="Vat"/>
-                    <field name="amount_energy_tax_e_cum" sum="E-tax"/>
-                    <field name="amount_energy_tax_g_cum" sum="G-tax"/>
-                    <field name="amount_durable_tax_e_cum" sum="Durable-E"/>
-                    <field name="amount_durable_tax_g_cum" sum="Durable-G"/>
-                    <field name="amount_tax_cum" sum="Tax"/>
-                    <field name="amount_tax_return" sum="Tax Return"/>
+                    <field name="amount_energy_cum" sum="EnergyTax"/>
+                    <field name="amount_tax_cum" sum="Tax Claim"/>
+                    <field name="amount_tax_return" sum="Tax Returned"/>
                     <field name="amount_payment" sum="Payment"/>
                     <field name="amount_cost" sum="Cost"/>
                     <field name="grand_total_cum" sum="Total Cum"/>
@@ -38,7 +34,7 @@
             <field name="arch" type="xml">
                 <form string="Claims">
                 <sheet string="Claim">
-                    <group colspan="6" col="6">
+                    <group colspan="8" col="8">
                         <group colspan="2" col="2">
                             <field name="contrrek"/>
                             <field string="Debtor" name="zpartner" />
@@ -46,22 +42,35 @@
                             <field name="batchcode"/>
                             <field name="claim_date"/>
                             <field name="last_line_date"/>
+
                         </group>
                         <group colspan="2" col="2">
                             <field name="amount_nett" />
-                            <field name="amount_tax_orig" />
+                            <field name="orig_vat" />
+                            <field name="orig_energy_tax" />
+                            <field name="orig_tax" />
                             <field name="nett_tax_total" />
                             <field name="amount_cost" />
-                            <field name="grand_total" />
                             <field name="amount_payment" />
+                            <field name="grand_total" />
                         </group>
                         <group colspan="2" col="2">
                             <field name="amount_vat" />
+                            <field name="amount_energy_tax" />
                             <field name="amount_energy_tax_e" />
                             <field name="amount_energy_tax_g" />
                             <field name="amount_durable_tax_e" />
                             <field name="amount_durable_tax_g" />
+                            <field name="amount_tax_claim" />
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name="amount_tax_return_energy" />
+                            <field name="amount_tax_return_vat" />
                             <field name="amount_tax_return" />
+                            <field name="amount_energy_tax_cum" />
+                            <field name="amount_vat_cum" />
+                            <field name="amount_tax_cum" />
+                            <field name="amount_tax_future" />
                         </group>
                     </group>
                     <notebook>
@@ -131,7 +140,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Cum">
+                        <page string="Details">
                             <group colspan="6" col="6">
                                 <group colspan="2" col="2">
                                     <field name="amount_nett_cum" />
