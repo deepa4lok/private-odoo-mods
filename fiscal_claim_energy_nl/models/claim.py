@@ -101,7 +101,6 @@ class claim(models.Model):
         self.amount_vat_cum = var_amount_vat_cum = var_amount_vat * (1 - part) - var_amount_tax_return_vat
         self.amount_tax_cum = var_amount_tax_cum = var_amount_vat_cum + var_amount_energy_tax_cum
         self.nett_tax_total_cum = var_nett_tax_total + var_amount_tax_cum
-        # self.grand_total = var_grand_total = var_nett_tax_total + var_amount_cost
         self.grand_total_cum = var_nett_tax_total + var_amount_cost - var_amount_payment
         self.amount_tax = var_amount_tax_claim - var_amount_tax_return
         self.amount_tax_future = var_amount_tax_cum - var_amount_tax_claim
@@ -514,7 +513,7 @@ class claim(models.Model):
         track_visibility='always',
     )
     amount_payment_cum = fields.Float(
-        string='Payment',
+        string='Balance Payments/Costs',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
