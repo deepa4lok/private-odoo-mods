@@ -50,7 +50,7 @@
             <field name="name">Debtors Claims</field>
             <field name="res_model">claim</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,pivot,form</field>
             <field eval="False" name="view_id"/>
             <field name="search_view_id" ref="view_claims_filter"/>
         </record>

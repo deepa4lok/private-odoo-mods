@@ -208,7 +208,7 @@
          <field name="model">claim</field>
          <field name="arch" type="xml">
             <pivot string="Claims Tax Analysis">
-                <field name="claim_id" type="row"/>
+                <field name="contrrek" type="row"/>
                 <field name="amount_nett" type="measure" widget="monetary"/>
                 <field name="orig_vat"  type="measure" widget="monetary"/>
                 <field name="orig_energy_tax" type="measure" widget="monetary"/>
