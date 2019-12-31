@@ -98,6 +98,18 @@ class claim(models.Model):
                                                                      var_amount_durable_tax_e_cum + \
                                                                      var_amount_energy_tax_g_cum + \
                                                                      var_amount_durable_tax_g_cum
+        # self.amount_energy_tax_e_nuon = var_amount_energy_tax_e_nuon = var_amount_energy_tax_e * (
+        #             1 - part) - var_amount_tax_return_ee
+        # self.amount_durable_tax_e_nuon = var_amount_durable_tax_e_nuon = var_amount_durable_tax_e * (
+        #             1 - part) - var_amount_tax_return_de
+        # self.amount_energy_tax_g_nuon = var_amount_energy_tax_g_nuon = var_amount_energy_tax_g * (
+        #             1 - part) - var_amount_tax_return_eg
+        # self.amount_durable_tax_g_nuon = var_amount_durable_tax_g_nuon = var_amount_durable_tax_g * (
+        #             1 - part) - var_amount_tax_return_dg
+        # self.amount_energy_tax_nuon = var_amount_energy_tax_nuon = var_amount_energy_tax_e_nuon + \
+        #                                                          var_amount_durable_tax_e_nuon + \
+        #                                                          var_amount_energy_tax_g_nuon + \
+        #                                                          var_amount_durable_tax_g_nuon
         self.amount_vat_cum = var_amount_vat_cum = var_amount_vat * (1 - part) - var_amount_tax_return_vat
         self.amount_tax_cum = var_amount_tax_cum = var_amount_vat_cum + var_amount_energy_tax_cum
         self.nett_tax_total_cum = var_nett_tax_total + var_amount_tax_cum
@@ -643,7 +655,6 @@ class claim(models.Model):
         var_amount_vat_cum = var_amount_vat * (1 - part) - var_amount_tax_return_vat
         var_amount_tax_cum = var_amount_vat_cum + var_amount_energy_tax_cum
         var_nett_tax_total_cum = var_nett_tax_total + var_amount_tax_cum
-        # self.grand_total = var_grand_total = var_nett_tax_total + var_amount_cost
         var_grand_total_cum = var_nett_tax_total + var_amount_cost - var_amount_payment
         var_amount_tax = var_amount_tax_claim - var_amount_tax_return
         var_amount_tax_future = var_amount_tax_cum - var_amount_tax_claim

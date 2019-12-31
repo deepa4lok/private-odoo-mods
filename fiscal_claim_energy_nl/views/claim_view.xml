@@ -203,7 +203,23 @@
                </search>
             </field>
          </record>
-
+         <record id="view_claims_pivot" model="ir.ui.view">
+         <field name="name">claim.pivot</field>
+         <field name="model">claim</field>
+         <field name="arch" type="xml">
+            <pivot string="Claims Tax Analysis">
+                <field name="claim_id" type="row"/>
+                <field name="amount_nett" type="measure" widget="monetary"/>
+                <field name="orig_vat"  type="measure" widget="monetary"/>
+                <field name="orig_energy_tax" type="measure" widget="monetary"/>
+                <field name="orig_tax" type="measure" widget="monetary"/>
+                <field name="nett_tax_total" type="measure" widget="monetary"/>
+                <field name="amount_cost" type="measure" widget="monetary"/>
+                <field name="amount_payment" type="measure" widget="monetary"/>
+                <field name="amount_total" type="measure" widget="monetary"/>
+            </pivot>
+         </field>
+         </record>
          <record id="payment_line_tree_view" model="ir.ui.view">
             <field name="name">payment.line.tree.view</field>
             <field name="model">payment.line</field>
