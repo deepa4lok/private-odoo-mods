@@ -48,74 +48,89 @@ class claim(models.Model):
         self.orig_durable_tax_e = var_orig_durable_tax_e = sum(line.durable_tax_e for line in self.claim_line)
         self.orig_energy_tax_g = var_orig_energy_tax_g = sum(line.energy_tax_g for line in self.claim_line)
         self.orig_durable_tax_g = var_orig_durable_tax_g = sum(line.durable_tax_g for line in self.claim_line)
-        self.orig_energy_tax = var_orig_energy_tax = var_orig_energy_tax_e + \
-                                                     var_orig_durable_tax_e + \
-                                                     var_orig_energy_tax_g + \
-                                                     var_orig_durable_tax_g
-        self.amount_nett = var_amount_nett = sum(line.amount_nett for line in self.claim_line)
-        self.amount_vat = var_amount_vat = var_orig_vat if var_orig_vat > 0 else 0
-        self.amount_energy_tax_e = var_amount_energy_tax_e = var_orig_energy_tax_e if var_orig_energy_tax > 0 else 0
-        self.amount_durable_tax_e = var_amount_durable_tax_e = var_orig_durable_tax_e if var_orig_energy_tax > 0 else 0
-        self.amount_energy_tax_g = var_amount_energy_tax_g = var_orig_energy_tax_g if var_orig_energy_tax > 0 else 0
-        self.amount_durable_tax_g = var_amount_durable_tax_g = var_orig_durable_tax_g if var_orig_energy_tax > 0 else 0
-        self.amount_energy_tax = var_amount_energy_tax = var_amount_energy_tax_e + \
-                                                         var_amount_durable_tax_e + \
-                                                         var_amount_energy_tax_g + \
-                                                         var_amount_durable_tax_g
-        self.amount_tax_claim = var_amount_tax_claim = var_amount_vat + var_amount_energy_tax
-        self.amount_cost = var_amount_cost = sum(line.amount_cost for line in self.cost_line)
-        self.amount_payment = var_amount_payment = sum(line.amount_payment for line in self.payment_line)
-        self.amount_tax_return = var_amount_tax_return = sum(line.amount_tax_return_total for line in self.tax_return_line)
-        self.amount_total = var_amount_total = sum(line.amount_total for line in self.claim_line)
-        self.nett_tax_total = var_nett_tax_total = var_orig_tax + var_amount_nett
+        self.orig_e_tax = var_orig_e_tax = var_orig_energy_tax_e + var_orig_durable_tax_e
+        self.orig_g_tax = var_orig_g_tax = var_orig_durable_tax_g + var_orig_energy_tax_g
+        self.orig_energy_tax = var_orig_energy_tax = var_orig_energy_tax_e + var_orig_energy_tax_g
+        self.orig_ode_tax = var_orig_ode_tax = var_orig_durable_tax_e + var_orig_durable_tax_g
+        self.orig_energy_ode_tax = var_orig_energy_ode_tax = var_orig_energy_tax + var_orig_ode_tax
+        self.orig_amount_nett = var_orig_amount_nett = sum(line.amount_nett for line in self.claim_line)
+        self.orig_nett_tax_total = var_orig_nett_tax_total = var_orig_tax + var_orig_amount_nett
+        self.orig_amount_total = var_orig_amount_total = sum(line.amount_total for line in self.claim_line)
 
+        self.calc_amount_vat = var_calc_amount_vat = var_orig_vat if var_orig_vat > 0 else 0
+        self.calc_amount_energy_tax_e = var_calc_amount_energy_tax_e = var_orig_energy_tax_e if var_orig_energy_ode_tax > 0 else 0
+        self.calc_amount_durable_tax_e = var_calc_amount_durable_tax_e = var_orig_durable_tax_e if var_orig_energy_ode_tax > 0 else 0
+        self.calc_amount_energy_tax_g = var_calc_amount_energy_tax_g = var_orig_energy_tax_g if var_orig_energy_ode_tax > 0 else 0
+        self.calc_amount_durable_tax_g = var_calc_amount_durable_tax_g = var_orig_durable_tax_g if var_orig_energy_ode_tax > 0 else 0
+        self.calc_amount_e_tax = var_calc_amount_e_tax = var_calc_amount_energy_tax_e + var_calc_amount_durable_tax_e
+        self.calc_amount_g_tax = var_calc_amount_g_tax = var_calc_amount_durable_tax_g + var_calc_amount_energy_tax_g
+        self.calc_amount_energy_tax = var_calc_amount_energy_tax = var_calc_amount_energy_tax_e + var_calc_amount_energy_tax_g
+        self.calc_amount_ode_tax = var_calc_amount_ode_tax = var_calc_amount_durable_tax_e + var_calc_amount_durable_tax_g
+        self.calc_amount_energy_ode_tax = var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
+                                                         var_calc_amount_durable_tax_e + \
+                                                         var_calc_amount_energy_tax_g + \
+                                                         var_calc_amount_durable_tax_g
+        self.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax
 
-        self.amount_tax_return_ee = var_amount_tax_return_ee = sum(line.energy_tax_e_return for line in self.tax_return_line)
-        self.amount_tax_return_de = var_amount_tax_return_de = sum(line.durable_tax_e_return for line in self.tax_return_line)
-        self.amount_tax_return_eg = var_amount_tax_return_eg = sum(line.energy_tax_g_return for line in self.tax_return_line)
-        self.amount_tax_return_dg = var_amount_tax_return_dg = sum(line.durable_tax_g_return for line in self.tax_return_line)
-        self.amount_tax_return_energy = var_amount_tax_return_energy = var_amount_tax_return_dg + \
-                                                                       var_amount_tax_return_de + \
-                                                                       var_amount_tax_return_eg + \
-                                                                       var_amount_tax_return_ee
-        self.amount_tax_return_vat = var_amount_tax_return_vat = sum(line.vat_return for line in self.tax_return_line)
+        self.amount_cost_lines = var_amount_cost = sum(line.amount_cost for line in self.cost_line)
+        self.amount_payment_lines = var_amount_payment = sum(line.amount_payment for line in self.payment_line)
+
+        self.tax_return_lines_total = var_tax_return_lines_total = sum(line.amount_tax_return_total for line in self.tax_return_line)
+        self.tax_return_lines_ee = var_tax_return_lines_ee = sum(line.energy_tax_e_return for line in self.tax_return_line)
+        self.tax_return_lines_de = var_tax_return_lines_de = sum(line.durable_tax_e_return for line in self.tax_return_line)
+        self.tax_return_lines_eg = var_tax_return_lines_eg = sum(line.energy_tax_g_return for line in self.tax_return_line)
+        self.tax_return_lines_dg = var_tax_return_lines_dg = sum(line.durable_tax_g_return for line in self.tax_return_line)
+        self.tax_return_lines_e = var_tax_return_lines_e = var_tax_return_lines_ee + var_tax_return_lines_de
+        self.tax_return_lines_g = var_tax_return_lines_g = var_tax_return_lines_dg + var_tax_return_lines_eg
+        self.tax_return_lines_energy = var_tax_return_lines_energy = var_tax_return_lines_e + var_tax_return_lines_g
+        self.tax_return_lines_ode = var_tax_return_lines_ode = var_tax_return_lines_de + var_tax_return_lines_dg
+        self.tax_return_lines_energy_ode = var_tax_return_energy_lines_ode = var_tax_return_lines_dg + \
+                                                                       var_tax_return_lines_de + \
+                                                                       var_tax_return_lines_eg + \
+                                                                       var_tax_return_lines_ee
+        self.tax_return_lines_vat = var_tax_return_lines_vat = sum(line.vat_return for line in self.tax_return_line)
 
         part_paid = var_amount_payment - var_amount_cost
         self.amount_payment_cum = part_paid if part_paid <= 0 else 0
 
-        if var_nett_tax_total > 0 and part_paid >= 0:
-            part = part_paid / var_nett_tax_total
+        if var_orig_nett_tax_total > 0 and part_paid >= 0:
+            part = part_paid / var_orig_nett_tax_total
             part = part if part <= 1 else 1
         else:
             part = 0
 
-        self.amount_nett_cum = var_amount_nett * part
-        self.amount_energy_tax_e_cum = var_amount_energy_tax_e_cum = var_amount_energy_tax_e * (1 - part) - var_amount_tax_return_ee
-        self.amount_durable_tax_e_cum = var_amount_durable_tax_e_cum = var_amount_durable_tax_e * (1 - part) - var_amount_tax_return_de
-        self.amount_energy_tax_g_cum = var_amount_energy_tax_g_cum = var_amount_energy_tax_g * (1 - part) - var_amount_tax_return_eg
-        self.amount_durable_tax_g_cum = var_amount_durable_tax_g_cum = var_amount_durable_tax_g * (1 - part) - var_amount_tax_return_dg
+        self.amount_nett_cum = var_orig_amount_nett * part
+        self.amount_energy_tax_e_cum = var_amount_energy_tax_e_cum = var_calc_amount_energy_tax_e * (
+                1 - part) - var_tax_return_lines_ee
+        self.amount_durable_tax_e_cum = var_amount_durable_tax_e_cum = var_calc_amount_durable_tax_e * (
+                1 - part) - var_tax_return_lines_de
+        self.amount_energy_tax_g_cum = var_amount_energy_tax_g_cum = var_calc_amount_energy_tax_g * (
+                1 - part) - var_tax_return_lines_eg
+        self.amount_durable_tax_g_cum = var_amount_durable_tax_g_cum = var_calc_amount_durable_tax_g * (
+                1 - part) - var_tax_return_lines_dg
         self.amount_energy_tax_cum = var_amount_energy_tax_cum = var_amount_energy_tax_e_cum + \
                                                                      var_amount_durable_tax_e_cum + \
                                                                      var_amount_energy_tax_g_cum + \
                                                                      var_amount_durable_tax_g_cum
-        # self.amount_energy_tax_e_nuon = var_amount_energy_tax_e_nuon = var_amount_energy_tax_e * (
-        #             1 - part) - var_amount_tax_return_ee
-        # self.amount_durable_tax_e_nuon = var_amount_durable_tax_e_nuon = var_amount_durable_tax_e * (
-        #             1 - part) - var_amount_tax_return_de
-        # self.amount_energy_tax_g_nuon = var_amount_energy_tax_g_nuon = var_amount_energy_tax_g * (
-        #             1 - part) - var_amount_tax_return_eg
-        # self.amount_durable_tax_g_nuon = var_amount_durable_tax_g_nuon = var_amount_durable_tax_g * (
-        #             1 - part) - var_amount_tax_return_dg
-        # self.amount_energy_tax_nuon = var_amount_energy_tax_nuon = var_amount_energy_tax_e_nuon + \
-        #                                                          var_amount_durable_tax_e_nuon + \
-        #                                                          var_amount_energy_tax_g_nuon + \
-        #                                                          var_amount_durable_tax_g_nuon
-        self.amount_vat_cum = var_amount_vat_cum = var_amount_vat * (1 - part) - var_amount_tax_return_vat
+        self.amount_energy_tax_e_nuon = var_amount_energy_tax_e_nuon = var_orig_energy_tax_e * (
+                    1 - part) - var_tax_return_lines_ee
+        self.amount_durable_tax_e_nuon = var_amount_durable_tax_e_nuon = var_orig_durable_tax_e * (
+                    1 - part) - var_tax_return_lines_de
+        self.amount_energy_tax_g_nuon = var_amount_energy_tax_g_nuon = var_orig_energy_tax_g * (
+                    1 - part) - var_tax_return_lines_eg
+        self.amount_durable_tax_g_nuon = var_amount_durable_tax_g_nuon = var_orig_durable_tax_g * (
+                    1 - part) - var_tax_return_lines_dg
+        self.amount_energy_tax_nuon = var_amount_energy_tax_nuon = var_amount_energy_tax_e_nuon + \
+                                                                 var_amount_durable_tax_e_nuon + \
+                                                                 var_amount_energy_tax_g_nuon + \
+                                                                 var_amount_durable_tax_g_nuon
+        self.amount_vat_cum = var_amount_vat_cum = var_calc_amount_vat * (1 - part) - var_tax_return_lines_vat
         self.amount_tax_cum = var_amount_tax_cum = var_amount_vat_cum + var_amount_energy_tax_cum
-        self.nett_tax_total_cum = var_nett_tax_total + var_amount_tax_cum
-        self.grand_total_cum = var_nett_tax_total + var_amount_cost - var_amount_payment
-        self.amount_tax = var_amount_tax_claim - var_amount_tax_return
-        self.amount_tax_future = var_amount_tax_cum - var_amount_tax_claim
+        self.nett_tax_total_cum = var_orig_nett_tax_total + var_amount_tax_cum
+        self.grand_total_cum = var_orig_nett_tax_total + var_amount_cost - var_amount_payment
+        ## todo gepruts
+        self.amount_tax = var_calc_amount_tax_claim - var_amount_tax_cum - var_tax_return_energy_lines_ode
+        self.amount_tax_future = var_calc_amount_tax_claim - var_amount_tax_cum
 
     @api.one
     @api.depends('claim_line.due_date'
@@ -250,8 +265,8 @@ class claim(models.Model):
     )
     comment = fields.Text('Additional Information'
         )
-    amount_nett = fields.Float(
-        string='Nett Claim Total',
+    orig_amount_nett = fields.Float(
+        string='Original Nett Claim Total',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
@@ -299,6 +314,20 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_amount'
     )
+    orig_e_tax = fields.Float(
+        string='Original Energy/ODE Tax E',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    orig_g_tax = fields.Float(
+        string='Original Energy/ODE Tax G',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
     orig_energy_tax = fields.Float(
         string='Original Energy Tax',
         digits=dp.get_precision('claim'),
@@ -306,71 +335,87 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_amount'
     )
-    amount_tax_claim = fields.Float(
+    orig_ode_tax = fields.Float(
+        string='Original ODE Tax',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    orig_energy_ode_tax = fields.Float(
+        string='Original Energy & ODE Tax',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    orig_nett_tax_total = fields.Float(
+        string='Original Nett plus Tax Total',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    orig_amount_total = fields.Float(
+        string='Original Claim Total',
+        digits=dp.get_precision('claim'),
+        store=True,
+        readonly=True,
+        compute='_compute_amount'
+    )
+    calc_amount_tax_claim = fields.Float(
         string='Tax Claim Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_vat = fields.Float(
+    calc_amount_vat = fields.Float(
         string='VAT Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_energy_tax_e = fields.Float(
+    calc_amount_energy_tax_e = fields.Float(
         string='Energy Tax E Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_energy_tax_g = fields.Float(
+    calc_amount_energy_tax_g = fields.Float(
         string='Energy Tax G Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_durable_tax_e = fields.Float(
+    calc_amount_durable_tax_e = fields.Float(
         string='Durable Tax E Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_durable_tax_g = fields.Float(
+    calc_amount_durable_tax_g = fields.Float(
         string='Durable Tax G Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_energy_tax = fields.Float(
+    calc_amount_energy_tax = fields.Float(
         string='Energy Tax Calc',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_total = fields.Float(
-        string='Claim Original Total',
-        digits=dp.get_precision('claim'),
-        store=True,
-        readonly=True,
-        compute='_compute_amount'
-    )
-    nett_tax_total = fields.Float(
-        string='Nett plus Tax Total',
-        digits=dp.get_precision('claim'),
-        store=True,
-        readonly=True,
-        compute='_compute_amount'
-    )
+
+
     amount_tax_return = fields.Float(
-        string='Tax Return',
+        string='Tax Returned',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
@@ -383,14 +428,14 @@ class claim(models.Model):
         readonly=True,
         compute='_compute_amount'
     )
-    amount_cost = fields.Float(
+    amount_cost_lines = fields.Float(
         string='Collection Cost',
         digits=dp.get_precision('claim'),
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
-    amount_payment = fields.Float(
+    amount_payment_lines = fields.Float(
         string='Payment',
         digits=dp.get_precision('claim'),
         store=True,

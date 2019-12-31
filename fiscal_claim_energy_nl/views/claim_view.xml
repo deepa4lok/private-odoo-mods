@@ -14,7 +14,6 @@
                     <field name="last_line_date"/>
                     <field name="zpartner"/>
                     <field name="contrrek"/>
-                    <field name="orig_energy_tax" sum="Orig Energy Tax"/>
                     <field name="amount_nett" sum="Nett"/>
                     <field name="amount_vat_cum" sum="Vat"/>
                     <field name="amount_energy_tax_cum" sum="EnergyTax Return"/>
