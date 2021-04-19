@@ -110,16 +110,17 @@ class tax_return_line(models.Model):
         default=10,
         help="Gives the sequence of this line when displaying the invoice."
     )
-    claim_id = fields.Many2one('claim',
+    claim_id = fields.Many2one(
+        'claim',
         string='Claim Reference',
         ondelete='cascade',
         index=True
     )
-    declaration_id = fields.Many2one('tax.declaration',
-                               string='Tax Declaration',
-                               ondelete='cascade',
-                               index=True
-                               )
+    declaration_id = fields.Many2one(
+        'tax.declaration',
+        string='Tax Declaration',
+        ondelete='cascade',
+        index=True)
     batch_date = fields.Date(
         string=_("Date Claim Batch"),
         related='claim_id.claim_date',

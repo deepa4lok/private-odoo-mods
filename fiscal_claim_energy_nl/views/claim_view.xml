@@ -18,7 +18,7 @@
                     <field name="amount_vat_cum" sum="Vat"/>
                     <field name="amount_energy_tax_cum" sum="EnergyTax Return"/>
                     <field name="amount_tax_cum" sum="Tax Claim"/>
-                    <field name="amount_tax_return" sum="Tax Returned"/>
+                    <field name="tax_return_lines_total" sum="Tax Returned"/>
                     <field name="amount_payment_lines" sum="Payment"/>
                     <field name="amount_cost_lines" sum="Cost"/>
                     <field name="grand_total_cum" sum="Total Cum"/>
@@ -47,11 +47,11 @@
                             <field name="orig_amount_nett" string="Nett Claim" />
                             <field name="orig_vat" string="VAT"/>
                             <field name="orig_energy_ode_tax" string="Energy Tax"/>
-                            <field name="orig_tax" string="Total Tax"/>
                             <field name="orig_nett_tax_total" string="Nett plus Tax"/>
                             <field name="amount_cost_lines" string="Cost"/>
+                            <field name="total_claim_incl_cost" string="Total incl. Cost"/>
                             <field name="amount_payment_lines" string="Payments"/>
-                            <field name="orig_amount_total" string="Nett Claim"/>
+                            <field name="total_claim_minus_payments" string="Balance"/>
                         </group>
                         <group string="Calculated" colspan="2" col="2">
                             <field name="calc_amount_vat" />
@@ -63,13 +63,12 @@
                             <field name="calc_amount_tax_claim" />
                         </group>
                         <group string="Returned" colspan="2" col="2">
-                            <field name="amount_tax_return_energy" />
-                            <field name="amount_tax_return_vat" />
-                            <field name="amount_tax_return" />
+                            <field name="tax_return_lines_total" />
+                            <field name="tax_return_lines_vat" />
+                            <field name="tax_return_lines_energy_ode" />
                             <field name="amount_energy_tax_cum" />
                             <field name="amount_vat_cum" />
                             <field name="amount_tax_cum" />
-                            <field name="amount_tax_future" />
                         </group>
                     </group>
                     <notebook>
@@ -155,7 +154,6 @@
                                     <field name="amount_durable_tax_e_cum" />
                                     <field name="amount_durable_tax_g_cum" />
                                     <field name="amount_tax_cum" />
-                                    <field name="amount_tax" />
                                 </group>
                             </group>
                         </page>
