@@ -666,7 +666,7 @@ class claim(models.Model):
     @api.multi
     def make_tax_line_from_claim(self, declaration):
         self.ensure_one()
-        if self.amount_tax_cum < 0.01:
+        if abs(self.amount_tax_cum) < 0.01:
             return
         vals = {
             'claim_id': self.id,
