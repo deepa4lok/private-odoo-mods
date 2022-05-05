@@ -1,12 +1,10 @@
-<?xml version="1.0"?>
-<openerp>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
     <data>
         <!-- TODO: put here a reminder on what to do at the first edition -->
         <record id="claim_tree_view" model="ir.ui.view">
             <field name="name">claim.tree.view.view</field>
             <field name="model">claim</field>
-            <field name="view_type">tree</field>
-            <field name="inherit_id" ref=""/>
             <field name="arch" type="xml">
                 <tree string="Claims">
                     <field name="batchcode"/>
@@ -220,7 +218,6 @@
          <record id="payment_line_tree_view" model="ir.ui.view">
             <field name="name">payment.line.tree.view</field>
             <field name="model">payment.line</field>
-            <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Payment Lines" delete="true" edit="false" create="true">
                     <field name="contract_number"/>
@@ -233,30 +230,31 @@
                 </tree>
             </field>
         </record>
-        <record id="view_payment_line_filter" model="ir.ui.view">
-            <field name="name">payment.line.select</field>
-            <field name="model">payment.line</field>
-            <field name="arch" type="xml">
-                <search string="Search Payment Line">
-                    <!--field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
-                    <filter name="tax_return" string="Tax Return" domain="[('tax_return_sent','=',True)]" help="Tax return processed"/>
-                    <separator/>
-                    <field name="zpartner" operator="child_of"/>
-                    <separator/-->
-                    <group expand="0" string="Group By">
-                    	<!--filter name="group_by_debtor" string="Debtor" context="{'group_by':'zpartner'}"/>
-                        <filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/-->
-                        <separator/>
-                        <filter string="Paid Month" context="{'group_by':'date_payment'}"/>
-                    </group>
-               </search>
-            </field>
-         </record>
+
+<!--        deep -->
+<!--        <record id="view_payment_line_filter" model="ir.ui.view">-->
+<!--            <field name="name">payment.line.select</field>-->
+<!--            <field name="model">payment.line</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search string="Search Payment Line">-->
+<!--                    &lt;!&ndash;field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>-->
+<!--                    <filter name="tax_return" string="Tax Return" domain="[('tax_return_sent','=',True)]" help="Tax return processed"/>-->
+<!--                    <separator/>-->
+<!--                    <field name="zpartner" operator="child_of"/>-->
+<!--                    <separator/&ndash;&gt;-->
+<!--                    <group expand="0" string="Group By">-->
+<!--                    	&lt;!&ndash;filter name="group_by_debtor" string="Debtor" context="{'group_by':'zpartner'}"/>-->
+<!--                        <filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/&ndash;&gt;-->
+<!--                        <separator/>-->
+<!--                        <filter string="Paid Month" context="{'group_by':'date_payment'}"/>-->
+<!--                    </group>-->
+<!--               </search>-->
+<!--            </field>-->
+<!--         </record>-->
 
         <record id="cost_line_tree_view" model="ir.ui.view">
             <field name="name">cost.line.tree.view</field>
             <field name="model">cost.line</field>
-            <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Cost Lines" delete="true" edit="false" create="true">
                     <field name="contract_number"/>
@@ -270,30 +268,30 @@
             </field>
         </record>
 
-        <record id="view_cost_line_filter" model="ir.ui.view">
-            <field name="name">cost.line.select</field>
-            <field name="model">cost.line</field>
-            <field name="arch" type="xml">
-                <search string="Search Cost Line">
-                    <!--field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>
-                    <filter name="tax_return" string="Tax Return" domain="[('tax_return_sent','=',True)]" help="Tax return processed"/>
-                    <separator/>
-                    <field name="zpartner" operator="child_of"/>
-                    <separator/-->
-                    <group expand="0" string="Group By">
-                    	<filter name="group_by_claim" string="Claim" context="{'group_by':'claim_id'}"/>
-                        <!--filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/-->
-                        <separator/>
-                        <filter string="Post Month" context="{'group_by':'due_date'}"/>
-                    </group>
-               </search>
-            </field>
-         </record>
+<!--        Deep-->
+<!--        <record id="view_cost_line_filter" model="ir.ui.view">-->
+<!--            <field name="name">cost.line.select</field>-->
+<!--            <field name="model">cost.line</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search string="Search Cost Line">-->
+<!--                    &lt;!&ndash;field name="contrrek" string="Claim" filter_domain="['|','|', ('contrrek','ilike',self), ('zpartner','ilike',self), ('batchcode', 'ilike', self)]"/>-->
+<!--                    <filter name="tax_return" string="Tax Return" domain="[('tax_return_sent','=',True)]" help="Tax return processed"/>-->
+<!--                    <separator/>-->
+<!--                    <field name="zpartner" operator="child_of"/>-->
+<!--                    <separator/&ndash;&gt;-->
+<!--                    <group expand="0" string="Group By">-->
+<!--                    	<filter name="group_by_claim" string="Claim" context="{'group_by':'claim_id'}"/>-->
+<!--                        &lt;!&ndash;filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/&ndash;&gt;-->
+<!--                        <separator/>-->
+<!--                        <filter string="Post Month" name="post_month" context="{'group_by':'due_date'}"/>-->
+<!--                    </group>-->
+<!--               </search>-->
+<!--            </field>-->
+<!--         </record>-->
 
         <record id="tax_line_tree_view" model="ir.ui.view">
             <field name="name">tax.line.tree.view</field>
             <field name="model">tax.return.line</field>
-            <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Tax Lines" delete="true" edit="false" create="true">
                     <field name="claim_id"/>
@@ -315,30 +313,30 @@
             </field>
         </record>
 
-        <record id="view_tax_line_filter" model="ir.ui.view">
-            <field name="name">tax.line.select</field>
-            <field name="model">tax.return.line</field>
-            <field name="arch" type="xml">
-                <search string="Search Tax Line">
-                    <filter name="tax_return" string="Tax Return" domain="[('docsoort','=','TR')]" help="Tax Return Lines"/>
-                    <filter name="tax_declaration" string="Tax Declaration" domain="[('docsoort','=','TD')]" help="Tax Declaration Lines"/>
-                    <separator/>
-                    <group expand="0" string="Group By">
-                    	<filter name="group_by_claim" string="Claim" context="{'group_by':'claim_id'}"/>
-                        <!--filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/-->
-                        <separator/>
-                        <filter string="Create Month" context="{'group_by':'create_date'}"/>
-                        <filter string="Request Month" context="{'group_by':'date_tax_request'}"/>
-                        <filter string="Tax declaration" context="{'group_by':'declaration_id'}"/>
-                    </group>
-               </search>
-            </field>
-         </record>
+<!--        deep-->
+<!--        <record id="view_tax_line_filter" model="ir.ui.view">-->
+<!--            <field name="name">tax.line.select</field>-->
+<!--            <field name="model">tax.return.line</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search string="Search Tax Line">-->
+<!--                    <filter name="tax_return" string="Tax Return" domain="[('docsoort','=','TR')]" help="Tax Return Lines"/>-->
+<!--                    <filter name="tax_declaration" string="Tax Declaration" domain="[('docsoort','=','TD')]" help="Tax Declaration Lines"/>-->
+<!--                    <separator/>-->
+<!--                    <group expand="0" string="Group By">-->
+<!--                    	<filter name="group_by_claim" string="Claim" context="{'group_by':'claim_id'}"/>-->
+<!--                        &lt;!&ndash;filter name="group_by_batchcode" string="Batchcode" context="{'group_by':'batchcode'}"/&ndash;&gt;-->
+<!--                        <separator/>-->
+<!--                        <filter string="Create Month" context="{'group_by':'create_date'}"/>-->
+<!--                        <filter string="Request Month" context="{'group_by':'date_tax_request'}"/>-->
+<!--                        <filter string="Tax declaration" context="{'group_by':'declaration_id'}"/>-->
+<!--                    </group>-->
+<!--               </search>-->
+<!--            </field>-->
+<!--         </record>-->
 
         <record id="tax_declaration_tree_view" model="ir.ui.view">
             <field name="name">tax.declaration.tree.view</field>
             <field name="model">tax.declaration</field>
-            <field name="view_type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Tax Declarations" delete="true" edit="false" create="true">
                     <field name="name"/>
@@ -414,4 +412,4 @@
             </field>
         </record>
     </data>
-</openerp>
+</odoo>

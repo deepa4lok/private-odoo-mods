@@ -32,7 +32,6 @@
             <field name="name">Calculate Tax Return</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">claim.tax.line.gen</field>
-            <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_generate_claim_tax_line"/>
             <field name="target">new</field>
@@ -41,13 +40,15 @@
 
 
 
-        <record model="ir.values" id="ad_order_make_invoice">
-            <field name="model_id" ref="model_tax_declaration" />
-            <field name="name">Make Invoices</field>
-            <field name="key2">client_action_multi</field>
-            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_view_generate_claim_tax_line'))" />
-            <field name="key">action</field>
-            <field name="model">tax.declaration</field>
-        </record>
+<!--        deep-->
+<!--        <record model="ir.values" id="ad_order_make_invoice">-->
+<!--            <field name="model_id" ref="model_tax_declaration" />-->
+<!--            <field name="name">Make Invoices</field>-->
+<!--            <field name="key2">client_action_multi</field>-->
+<!--            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_view_generate_claim_tax_line'))" />-->
+<!--            <field name="key">action</field>-->
+<!--            <field name="model">tax.declaration</field>-->
+<!--        </record>-->
+
     </data>
 </odoo>

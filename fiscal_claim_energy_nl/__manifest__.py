@@ -20,7 +20,7 @@
 
 {
     'name': 'Fiscal Claim Energy NL',
-    'version': '8.0.1.0.0',
+    'version': '14.0.0.0.0',
     'author': 'hulshof',
     'maintainer': 'False',
     'website': 'False',
@@ -116,7 +116,7 @@ To contribute to this module, please visit http://odoo-community.org.
 """,
 
     # any module necessary for this one to work correctly
-    'depends': ['decimal_precision',
+    'depends': [
                 'mail','mis_builder',
     ],
     'external_dependencies': {

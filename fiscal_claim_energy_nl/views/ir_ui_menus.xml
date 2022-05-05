@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<openerp>
+<odoo>
     <data>
 
         <menuitem name="Claims"
@@ -11,13 +11,8 @@
                   parent="menu_claims"
                   sequence="10"
                   />
-        <menuitem action="action_claims_view"
-                  name="Claims"
-                  id="menu_action_claims"
-                  parent="menu_claims_header"
-                  sequence="2"
-                  groups=""
-                  />
+
+
         <!--MIS-builder menu -->
         <menuitem id="mis_report_finance_menu"
                   parent="menu_claims_header"
@@ -49,11 +44,10 @@
         <record id="action_claims_view" model="ir.actions.act_window">
             <field name="name">Debtors Claims</field>
             <field name="res_model">claim</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,pivot,form</field>
             <field eval="False" name="view_id"/>
-            <field name="search_view_id" ref="view_claims_filter"/>
         </record>
+<!--            <field name="search_view_id" ref="view_claims_filter"/> deep-->
 
         <record id="action_claim_tree_view" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
@@ -68,15 +62,22 @@
             <field name="act_window_id" ref="action_claims_view"/>
         </record>
 
+
+        <menuitem action="action_claims_view"
+                  name="Claims"
+                  id="menu_action_claims"
+                  parent="menu_claims_header"
+                  sequence="2"
+                  />
+
         <!--Payment Line -->
 
         <record id="action_payment_line_view" model="ir.actions.act_window">
             <field name="name">Payment Lines</field>
             <field name="res_model">payment.line</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="view_payment_line_filter"/>
         </record>
+<!--            <field name="search_view_id" ref="view_payment_line_filter"/> deep-->
 
         <record id="action_payment_line_tree_view" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
@@ -103,10 +104,9 @@
         <record id="action_cost_line_view" model="ir.actions.act_window">
             <field name="name">Cost Lines</field>
             <field name="res_model">cost.line</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="view_cost_line_filter"/>
         </record>
+<!--            <field name="search_view_id" ref="view_cost_line_filter"/> deep-->
 
         <record id="action_cost_line_tree_view" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
@@ -133,10 +133,9 @@
         <record id="action_tax_line_view" model="ir.actions.act_window">
             <field name="name">Tax Lines</field>
             <field name="res_model">tax.return.line</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="view_tax_line_filter"/>
         </record>
+<!--            <field name="search_view_id" ref="view_tax_line_filter"/> deep-->
 
         <record id="action_tax_line_tree_view" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
@@ -163,7 +162,6 @@
         <record id="action_tax_declaration_view" model="ir.actions.act_window">
             <field name="name">Tax Declarations</field>
             <field name="res_model">tax.declaration</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
@@ -192,4 +190,4 @@
 
 
     </data>
-</openerp>
+</odoo>

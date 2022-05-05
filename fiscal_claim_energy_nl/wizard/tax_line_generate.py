@@ -21,7 +21,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.addons.queue_job.job import job, related_action
+from odoo.addons.queue_job.job import Job #, related_action
 from odoo.addons.queue_job.exception import FailedJobError
 from unidecode import unidecode
 
@@ -37,7 +37,6 @@ class ClaimTaxLineGen(models.TransientModel):
 
 
 
-    @api.multi
     def generate_tax_lines(self):
         context = self._context
 
@@ -71,7 +70,7 @@ class ClaimTaxLineGen(models.TransientModel):
                 claims.with_context(ctx).generate_tax_lines_from_claim(decl)
         return True
 
-    @job
+    #@job
     def _split_jobs(self, claims, declaration):
         size = self.chunk_size
         ctx = self._context

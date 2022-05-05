@@ -18,17 +18,18 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.tools.translate import _
-import openerp.addons.decimal_precision as dp
+from odoo import models, fields, api, _
+from odoo.tools.translate import _
+import odoo.addons.decimal_precision as dp
 
 class claim_line(models.Model):
     _name = "claim.line"
 
-    @api.one
+
     @api.depends('nett_amount', 'vat', 'energy_tax_e', 'energy_tax_g',
         'durable_tax_e', 'durable_tax_g')
     def _compute_amount(self):
+        self.ensure_one()
         #import pdb; pdb.set_trace()
         self.amount_tax = self.vat + self.energy_tax_e + self.energy_tax_g + self.durable_tax_e + self.durable_tax_g
         self.amount_nett = self.nett_amount

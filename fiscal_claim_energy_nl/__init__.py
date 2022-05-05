@@ -19,5 +19,5 @@
 ##############################################################################
 
 from . import models
-import wizard
+from . import wizard
 from .hooks import post_init_hook

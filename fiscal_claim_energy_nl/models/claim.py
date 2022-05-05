@@ -18,11 +18,11 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.tools.translate import _
-import openerp.addons.decimal_precision as dp
+from odoo import models, fields, api, _
+from odoo.tools.translate import _
+import odoo.addons.decimal_precision as dp
 from odoo.exceptions import UserError, ValidationError
-from odoo.addons.queue_job.job import job, related_action
+from odoo.addons.queue_job.job import Job #, related_action
 from odoo.addons.queue_job.exception import FailedJobError
 
 class claim(models.Model):
@@ -35,13 +35,14 @@ class claim(models.Model):
         },
     }
 
-    @api.one
+
     @api.depends('claim_line',
                  'tax_return_line',
                  'cost_line',
                  'payment_line'
                  )
     def _compute_amount(self):
+        self.ensure_one()
         ## parsing claim/payment/cost/tax lines in originating variables
         self.orig_tax = var_orig_tax = sum(line.amount_tax for line in self.claim_line)
         self.orig_vat = var_orig_vat = sum(line.vat for line in self.claim_line)
@@ -88,15 +89,17 @@ class claim(models.Model):
         self.calc_amount_durable_tax_g = var_calc_amount_durable_tax_g = \
             var_orig_durable_tax_g if var_orig_energy_ode_tax > 0 else 0
         ## calculating calculated combined values, throwing out negative amounts
-        self.calc_amount_e_tax = var_calc_amount_e_tax = var_calc_amount_energy_tax_e + var_calc_amount_durable_tax_e
-        self.calc_amount_g_tax = var_calc_amount_g_tax = var_calc_amount_durable_tax_g + var_calc_amount_energy_tax_g
+
+        # self.calc_amount_e_tax = var_calc_amount_e_tax = var_calc_amount_energy_tax_e + var_calc_amount_durable_tax_e -- deep
+        # self.calc_amount_g_tax = var_calc_amount_g_tax = var_calc_amount_durable_tax_g + var_calc_amount_energy_tax_g -- deep
         self.calc_amount_energy_tax = var_calc_amount_energy_tax = var_calc_amount_energy_tax_e + var_calc_amount_energy_tax_g
-        self.calc_amount_ode_tax = var_calc_amount_ode_tax = var_calc_amount_durable_tax_e + var_calc_amount_durable_tax_g
-        self.calc_amount_energy_ode_tax = var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
-                                                         var_calc_amount_durable_tax_e + \
-                                                         var_calc_amount_energy_tax_g + \
-                                                         var_calc_amount_durable_tax_g
-        self.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax
+        # self.calc_amount_ode_tax = var_calc_amount_ode_tax = var_calc_amount_durable_tax_e + var_calc_amount_durable_tax_g --deep
+        # self.calc_amount_energy_ode_tax = var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
+        #                                                  var_calc_amount_durable_tax_e + \
+        #                                                  var_calc_amount_energy_tax_g + \
+        #                                                  var_calc_amount_durable_tax_g --deep
+        # self.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax --deep
+        self.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat
 
         ## calculating from parsed values
         self.tax_return_lines_e = var_tax_return_lines_e = var_tax_return_lines_ee + var_tax_return_lines_de
@@ -162,9 +165,10 @@ class claim(models.Model):
         ## todo gepruts
 
 
-    @api.one
+
     @api.depends('claim_line.due_date')
     def _compute_last_date(self):
+        self.ensure_one()
         last_date = []
         for line in self.claim_line:
             last_date.append(line.due_date)
@@ -652,8 +656,8 @@ class claim(models.Model):
         track_visibility='always',
     )
 
-    @job
-    @api.multi
+    # @Job
+    @api.model
     def generate_tax_lines_from_claim(self, declaration):
         context = self._context
         cutoff_type = context.get('cutoff', False)
@@ -663,7 +667,7 @@ class claim(models.Model):
             else:
                 claim.make_tax_line_from_claim_lines(declaration)
 
-    @api.multi
+
     def make_tax_line_from_claim(self, declaration):
         self.ensure_one()
         if abs(self.amount_tax_cum) < 0.01:
@@ -681,7 +685,7 @@ class claim(models.Model):
         }
         return self.env['tax.return.line'].create(vals)
 
-    @api.multi
+
     def make_tax_line_from_claim_lines(self, declaration):
         self.ensure_one()
         if self.last_line_date <= declaration.to_invoice_date:

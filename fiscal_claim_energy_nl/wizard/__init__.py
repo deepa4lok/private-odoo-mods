@@ -20,7 +20,7 @@
 #
 ##############################################################################
 
-import tax_line_generate
+from . import tax_line_generate
 
 
 

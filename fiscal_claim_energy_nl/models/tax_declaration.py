@@ -18,15 +18,15 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.tools.translate import _
-import openerp.addons.decimal_precision as dp
+from odoo import models, fields, api, _
+from odoo.tools.translate import _
+import odoo.addons.decimal_precision as dp
 from odoo.exceptions import UserError, ValidationError
 
 class TaxDeclaration(models.Model):
     _name = "tax.declaration"
 
-    @api.one
+
     @api.depends('tax_return_line.amount_tax_return_total')
     def _compute_amount(self):
         self.vat_return = vat_return = sum(line.vat_return for line in self.tax_return_line)
@@ -78,7 +78,7 @@ class TaxDeclaration(models.Model):
                                 compute='_compute_amount')
 
 
-    @api.multi
+
     @api.constrains('from_invoice_date', 'to_invoice_date', 'from_batch_date', 'to_batch_date')
     def _check_start_end_dates(self):
         for record in self:
@@ -96,7 +96,7 @@ class TaxDeclaration(models.Model):
 class tax_return_line(models.Model):
     _name = "tax.return.line"
 
-    @api.one
+
     @api.depends('vat_return', 'energy_tax_e_return', 'energy_tax_g_return',
         'durable_tax_e_return', 'durable_tax_g_return')
     def _compute_amount(self):
