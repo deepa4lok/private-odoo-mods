@@ -29,11 +29,10 @@ class claim_line(models.Model):
     @api.depends('nett_amount', 'vat', 'energy_tax_e', 'energy_tax_g',
         'durable_tax_e', 'durable_tax_g')
     def _compute_amount(self):
-        self.ensure_one()
-        #import pdb; pdb.set_trace()
-        self.amount_tax = self.vat + self.energy_tax_e + self.energy_tax_g + self.durable_tax_e + self.durable_tax_g
-        self.amount_nett = self.nett_amount
-        self.amount_total = self.amount_tax + self.amount_nett
+        for line in self:
+            line.amount_tax = line.vat + line.energy_tax_e + line.energy_tax_g + line.durable_tax_e + line.durable_tax_g
+            line.amount_nett = line.nett_amount
+            line.amount_total = line.amount_tax + line.amount_nett
 
     bdn = fields.Char(
         string=_("BdN"),

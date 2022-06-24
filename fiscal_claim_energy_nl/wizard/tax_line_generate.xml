@@ -50,5 +50,17 @@
 <!--            <field name="model">tax.declaration</field>-->
 <!--        </record>-->
 
+
+        <record id="act_order_make_invoice" model="ir.actions.act_window">
+            <field name="name">Make Invoices</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">claim.tax.line.gen</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_generate_claim_tax_line"/>
+            <field name="binding_model_id" ref="model_tax_declaration" />
+            <field name="binding_view_types">list</field>
+            <field name="target">new</field>
+        </record>
+
     </data>
 </odoo>
