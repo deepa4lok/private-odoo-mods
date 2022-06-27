@@ -100,8 +100,9 @@ class tax_return_line(models.Model):
     @api.depends('vat_return', 'energy_tax_e_return', 'energy_tax_g_return',
         'durable_tax_e_return', 'durable_tax_g_return')
     def _compute_amount(self):
-        #import pdb; pdb.set_trace()
-        self.amount_tax_return_total = self.vat_return + self.energy_tax_e_return + self.energy_tax_g_return + self.durable_tax_e_return + self.durable_tax_g_return
+        for case in self:
+            case.amount_tax_return_total = case.vat_return + case.energy_tax_e_return + case.energy_tax_g_return \
+                                           + case.durable_tax_e_return + case.durable_tax_g_return
 
 
 
