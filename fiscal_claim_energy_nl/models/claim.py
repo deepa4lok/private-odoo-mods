@@ -20,8 +20,7 @@
 
 from odoo import models, fields, api, _
 from odoo.tools.translate import _
-import odoo.addons.decimal_precision as dp
-from odoo.exceptions import UserError, ValidationError
+
 from odoo.addons.queue_job.job import Job #, related_action
 from odoo.addons.queue_job.exception import FailedJobError
 
@@ -285,112 +284,112 @@ class claim(models.Model):
         )
     orig_amount_nett = fields.Float(
         string='Original Nett Claim Total',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_tax = fields.Float(
         string='Original Tax Amount',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_vat = fields.Float(
         string='Original VAT Amount',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_energy_tax_e = fields.Float(
         string='Original Energy Tax E',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_energy_tax_g = fields.Float(
         string='Original Energy Tax G',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_durable_tax_e = fields.Float(
         string='Original Durable Tax E',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_durable_tax_g = fields.Float(
         string='Original Durable Tax G',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_e_tax = fields.Float(
         string='Original Energy/ODE Tax E',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_g_tax = fields.Float(
         string='Original Energy/ODE Tax G',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_energy_tax = fields.Float(
         string='Original Energy Tax',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_ode_tax = fields.Float(
         string='Original ODE Tax',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_energy_ode_tax = fields.Float(
         string='Original Energy & ODE Tax',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_nett_tax_total = fields.Float(
         string='Original Nett plus Tax Total',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     orig_amount_total = fields.Float(
         string='Original Claim Total in DUT',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     total_claim_incl_cost = fields.Float(
         string='Total incl. Cost',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     total_claim_minus_payments = fields.Float(
         string='Balance',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
@@ -399,49 +398,49 @@ class claim(models.Model):
 
     calc_amount_tax_claim = fields.Float(
         string='Tax Claim Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     calc_amount_vat = fields.Float(
         string='VAT Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     calc_amount_energy_tax_e = fields.Float(
         string='Energy Tax E Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     calc_amount_energy_tax_g = fields.Float(
         string='Energy Tax G Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     calc_amount_durable_tax_e = fields.Float(
         string='Durable Tax E Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     calc_amount_durable_tax_g = fields.Float(
         string='Durable Tax G Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     calc_amount_energy_tax = fields.Float(
         string='Energy Tax Calc',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
@@ -449,91 +448,91 @@ class claim(models.Model):
     ##todo
     amount_cost_lines = fields.Float(
         string='Collection Cost',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_payment_lines = fields.Float(
         string='Payment',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_total = fields.Float(
         string='Total Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_ee = fields.Float(
         string='EE Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_de = fields.Float(
         string='DE Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_eg = fields.Float(
         string='EG Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_dg = fields.Float(
         string='DG Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_e = fields.Float(
         string='Electricity Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_g = fields.Float(
         string='Gas Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_energy = fields.Float(
         string='Energy Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_ode = fields.Float(
         string='Durable Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_energy_ode = fields.Float(
         string='Energy Total Tax Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     tax_return_lines_vat = fields.Float(
         string='VAT Returned',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
@@ -541,84 +540,84 @@ class claim(models.Model):
     ##todo
     amount_nett_cum = fields.Float(
         string='Nett Claim Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_tax_cum = fields.Float(
         string='Current Tax Claim',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_vat_cum = fields.Float(
         string='VAT Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_energy_tax_e_cum = fields.Float(
         string='Energy Tax E Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_energy_tax_g_cum = fields.Float(
         string='Energy Tax G Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_durable_tax_e_cum = fields.Float(
         string='Durable Tax E Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_durable_tax_g_cum = fields.Float(
         string='Durable Tax G Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_energy_tax_cum = fields.Float(
         string='Energy Tax Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_total_cum = fields.Float(
         string='Claim Original Total',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     nett_tax_total_cum = fields.Float(
         string='Nett plus Tax Total Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     grand_total_cum = fields.Float(
         string='Claim Grand Total',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_cost_cum = fields.Float(
         string='Collection Cost Cum',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount',
@@ -626,7 +625,7 @@ class claim(models.Model):
     )
     amount_payment_cum = fields.Float(
         string='Balance Payments/Costs',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount',

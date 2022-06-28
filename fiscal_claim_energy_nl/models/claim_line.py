@@ -58,21 +58,21 @@ class claim_line(models.Model):
     )
     amount_tax = fields.Float(
         string='Tax',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_nett = fields.Float(
         string='Nett',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
     )
     amount_total = fields.Float(
         string='Total',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=True,
         compute='_compute_amount'
@@ -171,7 +171,7 @@ class cost_line(models.Model):
     )
     amount_cost = fields.Float(
         string='Cost',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         readonly=False,
     )
     due_date = fields.Date(
@@ -226,7 +226,7 @@ class payment_line(models.Model):
     )
     amount_payment = fields.Float(
         string='Payment',
-        digits=dp.get_precision('claim'),
+        digits='claim',
         store=True,
         readonly=False,
     )
