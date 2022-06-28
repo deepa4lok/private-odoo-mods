@@ -42,122 +42,124 @@ class claim(models.Model):
                  'payment_line'
                  )
     def _compute_amount(self):
-        self.ensure_one()
+        # self.ensure_one()
         ## parsing claim/payment/cost/tax lines in originating variables
-        self.orig_tax = var_orig_tax = sum(line.amount_tax for line in self.claim_line)
-        self.orig_vat = var_orig_vat = sum(line.vat for line in self.claim_line)
-        self.orig_energy_tax_e = var_orig_energy_tax_e = sum(line.energy_tax_e for line in self.claim_line)
-        self.orig_durable_tax_e = var_orig_durable_tax_e = sum(line.durable_tax_e for line in self.claim_line)
-        self.orig_energy_tax_g = var_orig_energy_tax_g = sum(line.energy_tax_g for line in self.claim_line)
-        self.orig_durable_tax_g = var_orig_durable_tax_g = sum(line.durable_tax_g for line in self.claim_line)
-        self.orig_amount_nett = var_orig_amount_nett = sum(line.amount_nett for line in self.claim_line)
-        self.orig_amount_total = var_orig_amount_total = sum(line.amount_total for line in self.claim_line)
-        self.amount_cost_lines = var_amount_cost_lines = sum(line.amount_cost for line in self.cost_line)
-        self.amount_payment_lines = var_amount_payment_lines = sum(line.amount_payment for line in self.payment_line)
-        self.tax_return_lines_total = var_tax_return_lines_total = \
-            sum(line.amount_tax_return_total for line in self.tax_return_line)
-        self.tax_return_lines_ee = var_tax_return_lines_ee = \
-            sum(line.energy_tax_e_return for line in self.tax_return_line)
-        self.tax_return_lines_de = var_tax_return_lines_de = \
-            sum(line.durable_tax_e_return for line in self.tax_return_line)
-        self.tax_return_lines_eg = var_tax_return_lines_eg = \
-            sum(line.energy_tax_g_return for line in self.tax_return_line)
-        self.tax_return_lines_dg = var_tax_return_lines_dg = \
-            sum(line.durable_tax_g_return for line in self.tax_return_line)
-        self.tax_return_lines_vat = var_tax_return_lines_vat = \
-            sum(line.vat_return for line in self.tax_return_line)
-        ## calculating original combined values
-        self.orig_nett_tax_total = var_orig_nett_tax_total = var_orig_tax + var_orig_amount_nett
-        self.orig_e_tax = var_orig_e_tax = var_orig_energy_tax_e + var_orig_durable_tax_e
-        self.orig_g_tax = var_orig_g_tax = var_orig_durable_tax_g + var_orig_energy_tax_g
-        self.orig_energy_tax = var_orig_energy_tax = var_orig_energy_tax_e + var_orig_energy_tax_g
-        self.orig_ode_tax = var_orig_ode_tax = var_orig_durable_tax_e + var_orig_durable_tax_g
-        self.orig_energy_ode_tax = var_orig_energy_ode_tax = var_orig_energy_tax + var_orig_ode_tax
-        self.total_claim_incl_cost = var_total_claim_incl_cost = var_orig_nett_tax_total + var_amount_cost_lines
-        self.total_claim_minus_payments = var_total_claim_incl_cost - var_amount_payment_lines
+
+        for case in self:
+            case.orig_tax = var_orig_tax = sum(line.amount_tax for line in case.claim_line)
+            case.orig_vat = var_orig_vat = sum(line.vat for line in case.claim_line)
+            case.orig_energy_tax_e = var_orig_energy_tax_e = sum(line.energy_tax_e for line in case.claim_line)
+            case.orig_durable_tax_e = var_orig_durable_tax_e = sum(line.durable_tax_e for line in case.claim_line)
+            case.orig_energy_tax_g = var_orig_energy_tax_g = sum(line.energy_tax_g for line in case.claim_line)
+            case.orig_durable_tax_g = var_orig_durable_tax_g = sum(line.durable_tax_g for line in case.claim_line)
+            case.orig_amount_nett = var_orig_amount_nett = sum(line.amount_nett for line in case.claim_line)
+            case.orig_amount_total = var_orig_amount_total = sum(line.amount_total for line in case.claim_line)
+            case.amount_cost_lines = var_amount_cost_lines = sum(line.amount_cost for line in case.cost_line)
+            case.amount_payment_lines = var_amount_payment_lines = sum(line.amount_payment for line in case.payment_line)
+            case.tax_return_lines_total = var_tax_return_lines_total = \
+                sum(line.amount_tax_return_total for line in case.tax_return_line)
+            case.tax_return_lines_ee = var_tax_return_lines_ee = \
+                sum(line.energy_tax_e_return for line in case.tax_return_line)
+            case.tax_return_lines_de = var_tax_return_lines_de = \
+                sum(line.durable_tax_e_return for line in case.tax_return_line)
+            case.tax_return_lines_eg = var_tax_return_lines_eg = \
+                sum(line.energy_tax_g_return for line in case.tax_return_line)
+            case.tax_return_lines_dg = var_tax_return_lines_dg = \
+                sum(line.durable_tax_g_return for line in case.tax_return_line)
+            case.tax_return_lines_vat = var_tax_return_lines_vat = \
+                sum(line.vat_return for line in case.tax_return_line)
+            ## calculating original combined values
+            case.orig_nett_tax_total = var_orig_nett_tax_total = var_orig_tax + var_orig_amount_nett
+            case.orig_e_tax = var_orig_e_tax = var_orig_energy_tax_e + var_orig_durable_tax_e
+            case.orig_g_tax = var_orig_g_tax = var_orig_durable_tax_g + var_orig_energy_tax_g
+            case.orig_energy_tax = var_orig_energy_tax = var_orig_energy_tax_e + var_orig_energy_tax_g
+            case.orig_ode_tax = var_orig_ode_tax = var_orig_durable_tax_e + var_orig_durable_tax_g
+            case.orig_energy_ode_tax = var_orig_energy_ode_tax = var_orig_energy_tax + var_orig_ode_tax
+            case.total_claim_incl_cost = var_total_claim_incl_cost = var_orig_nett_tax_total + var_amount_cost_lines
+            case.total_claim_minus_payments = var_total_claim_incl_cost - var_amount_payment_lines
 
 
-        ## todo calculated amounts: leaving out negative amounts. test is if orig_energy_ode_tax is positive.
-        ## todo Is this right?
-        self.calc_amount_vat = var_calc_amount_vat = var_orig_vat if var_orig_vat > 0 else 0
-        self.calc_amount_energy_tax_e = var_calc_amount_energy_tax_e = \
-            var_orig_energy_tax_e if var_orig_energy_ode_tax > 0 else 0
-        self.calc_amount_durable_tax_e = var_calc_amount_durable_tax_e = \
-            var_orig_durable_tax_e if var_orig_energy_ode_tax > 0 else 0
-        self.calc_amount_energy_tax_g = var_calc_amount_energy_tax_g = \
-            var_orig_energy_tax_g if var_orig_energy_ode_tax > 0 else 0
-        self.calc_amount_durable_tax_g = var_calc_amount_durable_tax_g = \
-            var_orig_durable_tax_g if var_orig_energy_ode_tax > 0 else 0
-        ## calculating calculated combined values, throwing out negative amounts
+            ## todo calculated amounts: leaving out negative amounts. test is if orig_energy_ode_tax is positive.
+            ## todo Is this right?
+            case.calc_amount_vat = var_calc_amount_vat = var_orig_vat if var_orig_vat > 0 else 0
+            case.calc_amount_energy_tax_e = var_calc_amount_energy_tax_e = \
+                var_orig_energy_tax_e if var_orig_energy_ode_tax > 0 else 0
+            case.calc_amount_durable_tax_e = var_calc_amount_durable_tax_e = \
+                var_orig_durable_tax_e if var_orig_energy_ode_tax > 0 else 0
+            case.calc_amount_energy_tax_g = var_calc_amount_energy_tax_g = \
+                var_orig_energy_tax_g if var_orig_energy_ode_tax > 0 else 0
+            case.calc_amount_durable_tax_g = var_calc_amount_durable_tax_g = \
+                var_orig_durable_tax_g if var_orig_energy_ode_tax > 0 else 0
+            ## calculating calculated combined values, throwing out negative amounts
 
 
-        # Fixme: Can be removed -- deep
-        # self.calc_amount_e_tax = var_calc_amount_e_tax = var_calc_amount_energy_tax_e + var_calc_amount_durable_tax_e -- deep
-        # self.calc_amount_g_tax = var_calc_amount_g_tax = var_calc_amount_durable_tax_g + var_calc_amount_energy_tax_g -- deep
-        # Fixme: -- end --
+            # Fixme: Can be removed -- deep
+            # case.calc_amount_e_tax = var_calc_amount_e_tax = var_calc_amount_energy_tax_e + var_calc_amount_durable_tax_e -- deep
+            # case.calc_amount_g_tax = var_calc_amount_g_tax = var_calc_amount_durable_tax_g + var_calc_amount_energy_tax_g -- deep
+            # Fixme: -- end --
 
 
-        self.calc_amount_energy_tax = var_calc_amount_energy_tax = var_calc_amount_energy_tax_e + var_calc_amount_energy_tax_g
+            case.calc_amount_energy_tax = var_calc_amount_energy_tax = var_calc_amount_energy_tax_e + var_calc_amount_energy_tax_g
 
 
-        # Fixme: remove it -- deep
-        # self.calc_amount_ode_tax = var_calc_amount_ode_tax = var_calc_amount_durable_tax_e + var_calc_amount_durable_tax_g --deep
-        # self.calc_amount_energy_ode_tax = var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
-        #                                                  var_calc_amount_durable_tax_e + \
-        #                                                  var_calc_amount_energy_tax_g + \
-        #                                                  var_calc_amount_durable_tax_g --deep
-        # self.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax --deep
-        # Fixme: -- end --
+            # Fixme: remove it -- deep
+            # case.calc_amount_ode_tax = var_calc_amount_ode_tax = var_calc_amount_durable_tax_e + var_calc_amount_durable_tax_g --deep
+            # case.calc_amount_energy_ode_tax = var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
+            #                                                  var_calc_amount_durable_tax_e + \
+            #                                                  var_calc_amount_energy_tax_g + \
+            #                                                  var_calc_amount_durable_tax_g --deep
+            # case.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax --deep
+            # Fixme: -- end --
 
-        # deep
-        var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
-                                                         var_calc_amount_durable_tax_e + \
-                                                         var_calc_amount_energy_tax_g + \
-                                                         var_calc_amount_durable_tax_g
+            # deep
+            var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
+                                                             var_calc_amount_durable_tax_e + \
+                                                             var_calc_amount_energy_tax_g + \
+                                                             var_calc_amount_durable_tax_g
 
-        self.calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax
+            case.calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax
 
-        ## calculating from parsed values
-        self.tax_return_lines_e = var_tax_return_lines_e = var_tax_return_lines_ee + var_tax_return_lines_de
-        self.tax_return_lines_g = var_tax_return_lines_g = var_tax_return_lines_dg + var_tax_return_lines_eg
-        self.tax_return_lines_energy = var_tax_return_lines_energy = var_tax_return_lines_e + var_tax_return_lines_g
-        self.tax_return_lines_ode = var_tax_return_lines_ode = var_tax_return_lines_de + var_tax_return_lines_dg
-        self.tax_return_lines_energy_ode = var_tax_return_energy_lines_ode = var_tax_return_lines_dg + \
-                                                                       var_tax_return_lines_de + \
-                                                                       var_tax_return_lines_eg + \
-                                                                       var_tax_return_lines_ee
+            ## calculating from parsed values
+            case.tax_return_lines_e = var_tax_return_lines_e = var_tax_return_lines_ee + var_tax_return_lines_de
+            case.tax_return_lines_g = var_tax_return_lines_g = var_tax_return_lines_dg + var_tax_return_lines_eg
+            case.tax_return_lines_energy = var_tax_return_lines_energy = var_tax_return_lines_e + var_tax_return_lines_g
+            case.tax_return_lines_ode = var_tax_return_lines_ode = var_tax_return_lines_de + var_tax_return_lines_dg
+            case.tax_return_lines_energy_ode = var_tax_return_energy_lines_ode = var_tax_return_lines_dg + \
+                                                                           var_tax_return_lines_de + \
+                                                                           var_tax_return_lines_eg + \
+                                                                           var_tax_return_lines_ee
 
-        ## calculate partial payments including costs
-        part_paid = var_amount_payment_lines - var_amount_cost_lines
-        self.amount_payment_cum = part_paid if part_paid <= 0 else 0
+            ## calculate partial payments including costs
+            part_paid = var_amount_payment_lines - var_amount_cost_lines
+            case.amount_payment_cum = part_paid if part_paid <= 0 else 0
 
-        if var_orig_nett_tax_total > 0 and part_paid >= 0:
-            part = part_paid / var_orig_nett_tax_total
-            part = part if part <= 1 else 1
-        else:
-            part = 0
+            if var_orig_nett_tax_total > 0 and part_paid >= 0:
+                part = part_paid / var_orig_nett_tax_total
+                part = part if part <= 1 else 1
+            else:
+                part = 0
 
-        self.amount_nett_cum = var_orig_amount_nett * part
-        self.amount_energy_tax_e_cum = var_amount_energy_tax_e_cum = var_orig_energy_tax_e * (
-                1 - part) - var_tax_return_lines_ee
-        self.amount_durable_tax_e_cum = var_amount_durable_tax_e_cum = var_orig_durable_tax_e * (
-                1 - part) - var_tax_return_lines_de
-        self.amount_energy_tax_g_cum = var_amount_energy_tax_g_cum = var_orig_energy_tax_g * (
-                1 - part) - var_tax_return_lines_eg
-        self.amount_durable_tax_g_cum = var_amount_durable_tax_g_cum = var_orig_durable_tax_g * (
-                1 - part) - var_tax_return_lines_dg
-        self.amount_energy_tax_cum = var_amount_energy_tax_cum = \
-                                                var_amount_energy_tax_e_cum + \
-                                                var_amount_durable_tax_e_cum + \
-                                                var_amount_energy_tax_g_cum + \
-                                                var_amount_durable_tax_g_cum
-        self.amount_vat_cum = var_amount_vat_cum = \
-                                                var_orig_vat * (1 - part) - var_tax_return_lines_vat
-        self.amount_tax_cum = var_amount_tax_cum = \
-                                                var_amount_vat_cum + var_amount_energy_tax_cum
-        self.nett_tax_total_cum = var_orig_nett_tax_total + var_amount_tax_cum
-        self.grand_total_cum = var_orig_nett_tax_total + var_amount_cost_lines - var_amount_payment_lines
-        ## todo gepruts
+            case.amount_nett_cum = var_orig_amount_nett * part
+            case.amount_energy_tax_e_cum = var_amount_energy_tax_e_cum = var_orig_energy_tax_e * (
+                    1 - part) - var_tax_return_lines_ee
+            case.amount_durable_tax_e_cum = var_amount_durable_tax_e_cum = var_orig_durable_tax_e * (
+                    1 - part) - var_tax_return_lines_de
+            case.amount_energy_tax_g_cum = var_amount_energy_tax_g_cum = var_orig_energy_tax_g * (
+                    1 - part) - var_tax_return_lines_eg
+            case.amount_durable_tax_g_cum = var_amount_durable_tax_g_cum = var_orig_durable_tax_g * (
+                    1 - part) - var_tax_return_lines_dg
+            case.amount_energy_tax_cum = var_amount_energy_tax_cum = \
+                                                    var_amount_energy_tax_e_cum + \
+                                                    var_amount_durable_tax_e_cum + \
+                                                    var_amount_energy_tax_g_cum + \
+                                                    var_amount_durable_tax_g_cum
+            case.amount_vat_cum = var_amount_vat_cum = \
+                                                    var_orig_vat * (1 - part) - var_tax_return_lines_vat
+            case.amount_tax_cum = var_amount_tax_cum = \
+                                                    var_amount_vat_cum + var_amount_energy_tax_cum
+            case.nett_tax_total_cum = var_orig_nett_tax_total + var_amount_tax_cum
+            case.grand_total_cum = var_orig_nett_tax_total + var_amount_cost_lines - var_amount_payment_lines
+            ## todo gepruts
 
 
 
