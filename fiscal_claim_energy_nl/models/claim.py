@@ -42,7 +42,6 @@ class claim(models.Model):
                  'payment_line'
                  )
     def _compute_amount(self):
-        # self.ensure_one()
         ## parsing claim/payment/cost/tax lines in originating variables
 
         for case in self:
@@ -68,6 +67,7 @@ class claim(models.Model):
                 sum(line.durable_tax_g_return for line in case.tax_return_line)
             case.tax_return_lines_vat = var_tax_return_lines_vat = \
                 sum(line.vat_return for line in case.tax_return_line)
+
             ## calculating original combined values
             case.orig_nett_tax_total = var_orig_nett_tax_total = var_orig_tax + var_orig_amount_nett
             case.orig_e_tax = var_orig_e_tax = var_orig_energy_tax_e + var_orig_durable_tax_e
@@ -90,28 +90,9 @@ class claim(models.Model):
                 var_orig_energy_tax_g if var_orig_energy_ode_tax > 0 else 0
             case.calc_amount_durable_tax_g = var_calc_amount_durable_tax_g = \
                 var_orig_durable_tax_g if var_orig_energy_ode_tax > 0 else 0
-            ## calculating calculated combined values, throwing out negative amounts
-
-
-            # Fixme: Can be removed -- deep
-            # case.calc_amount_e_tax = var_calc_amount_e_tax = var_calc_amount_energy_tax_e + var_calc_amount_durable_tax_e -- deep
-            # case.calc_amount_g_tax = var_calc_amount_g_tax = var_calc_amount_durable_tax_g + var_calc_amount_energy_tax_g -- deep
-            # Fixme: -- end --
-
 
             case.calc_amount_energy_tax = var_calc_amount_energy_tax = var_calc_amount_energy_tax_e + var_calc_amount_energy_tax_g
 
-
-            # Fixme: remove it -- deep
-            # case.calc_amount_ode_tax = var_calc_amount_ode_tax = var_calc_amount_durable_tax_e + var_calc_amount_durable_tax_g --deep
-            # case.calc_amount_energy_ode_tax = var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
-            #                                                  var_calc_amount_durable_tax_e + \
-            #                                                  var_calc_amount_energy_tax_g + \
-            #                                                  var_calc_amount_durable_tax_g --deep
-            # case.calc_amount_tax_claim = var_calc_amount_tax_claim = var_calc_amount_vat + var_calc_amount_energy_ode_tax --deep
-            # Fixme: -- end --
-
-            # deep
             var_calc_amount_energy_ode_tax = var_calc_amount_energy_tax_e + \
                                                              var_calc_amount_durable_tax_e + \
                                                              var_calc_amount_energy_tax_g + \
@@ -159,7 +140,6 @@ class claim(models.Model):
                                                     var_amount_vat_cum + var_amount_energy_tax_cum
             case.nett_tax_total_cum = var_orig_nett_tax_total + var_amount_tax_cum
             case.grand_total_cum = var_orig_nett_tax_total + var_amount_cost_lines - var_amount_payment_lines
-            ## todo gepruts
 
 
 
