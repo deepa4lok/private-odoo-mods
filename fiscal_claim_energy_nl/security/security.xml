@@ -5,8 +5,8 @@
 
         <record id="group_module_fiscal_claim_user" model="res.groups">
             <field name="name">Fiscal Claim User</field>
-            <!--field name="category_id" ref="module_hon"/-->
             <field name="implied_ids" eval="[(4, ref('base.group_partner_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
 
     </data>
